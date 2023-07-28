@@ -1,0 +1,5 @@
+assets
+game
+*.py
+.vscode
+__pycache__
