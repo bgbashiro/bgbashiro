@@ -37,7 +37,7 @@ function fnList(args, out){}
 
 function fnChatGPT(args, out){
     gpt_prompt = args.join(" ")
-    headers = { 'Content-Type' : 'application/json', 'Authorization' : 'Bearer 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'}
+    headers = { 'Content-Type' : 'application/json', 'Authorization' : <<< Add OpenAI key here >>>}
     method = 'POST'
     body = JSON.stringify({
         "model": "gpt-3.5-turbo",
