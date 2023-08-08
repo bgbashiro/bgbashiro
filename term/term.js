@@ -36,8 +36,12 @@ function fnExit(args, out) {
 function fnList(args, out){}
 
 function fnChatGPT(args, out){
+    // going to suppress it for now
+    out.innerHTML += "\n"
+    out.innerHTML += "ChatGPT commands are not refined yet"
+    return 
     gpt_prompt = args.join(" ")
-    headers = { 'Content-Type' : 'application/json', 'Authorization' : <<< Add OpenAI key here >>>}
+    headers = { 'Content-Type' : 'application/json', 'Authorization' : '<<< Add OpenAI key here >>>'}
     method = 'POST'
     body = JSON.stringify({
         "model": "gpt-3.5-turbo",
