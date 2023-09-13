@@ -5,7 +5,7 @@ class Player {
     this.positionY = positionY;
     this.velocityX = 0;
     this.velocityY = 0;
-    this.radius = 80;
+    this.radius = 25;
   }
 
   moveTowardsMouse() {
@@ -33,7 +33,7 @@ class Player {
   }
 
   show() {
-    ellipse(this.positionX,this.positionY,this.radius,this.radius);
+    ellipse(this.positionX,this.positionY,2*this.radius,2*this.radius);
   }
 }
 
@@ -50,11 +50,51 @@ class Rod {
 
   show() {
     stroke(this.color);
-    strokeWeight(20);
+    strokeWeight(5);
     line(this.startX, this.startY, this.endX, this.endY);
     strokeWeight(1);
     stroke('black');
   }
+}
+
+function checkLineAndCircleCollision(
+  cx,cy,  // center coordinates of circle
+  r,      // radis of circle
+  x1, y1, // start of line segment
+  x2, y2  // end of line segment
+) {
+  
+  xAC = cx - x1;
+  yAC = cy - y1;
+
+  xAB = x2 - x1;
+  yAB = y2 - y1;
+
+  dotACAB = xAC*xAB + yAC*yAB;
+  magnAB  = xAB*xAB + yAB*yAB;
+
+  uxAB = xAB / magnAB;
+  uyAB = yAB / magnAB;
+
+  xAD = uxAB * dotACAB;
+  yAD = uyAB * dotACAB;
+  
+  projX = x1+xAD;
+  projY = y1+yAD;
+
+  dx = projX-cx;
+  dy = projY-cy;
+  dd = Math.sqrt(dx*dx+dy*dy);
+
+  if (
+    (dd<=r) && (projX <= (r + Math.max(x1,x2)) ) && (projY <= (r+Math.max(y1, y2)) )
+    && (projX >= (Math.min(x1,x2) - r) ) && (projY >= (Math.min(y1, y2) - r) )
+  ){
+    return true;
+  } else {
+    return false;
+  }
+
 }
 
 function checkCollisionRodPlayer(player, rod) {  
@@ -104,7 +144,7 @@ function setup() {
   createCanvas(800, 800);
   frameRate(24);
   entities.player = new Player(280,80);
-  entities.rod1 = new Rod(100,100,110,300);
+  entities.rod1 = new Rod(100,100,150,300);
 }
 
 function draw() {
@@ -112,13 +152,14 @@ function draw() {
     entities.player.moveTowardsMouse();
     entities.player.show();
     entities.rod1.show();
-    a = checkCollisionRodPlayer(entities.player, entities.rod1);
-    rod2 = {...entities.rod1};
-    rod2.startX = entities.rod1.endX;
-    rod2.startY = entities.rod1.endY;
-    rod2.endX = entities.rod1.startX;
-    rod2.endY = entities.rod1.startY;
-    b = checkCollisionRodPlayer(entities.player, rod2)
-    if (a || b) {entities.rod1.color = "red";} else {entities.rod1.color = "black";}
-
+    if (checkLineAndCircleCollision(
+      entities.player.positionX, entities.player.positionY, 
+      entities.player.radius, 
+      entities.rod1.startX, entities.rod1.startY, 
+      entities.rod1.endX, entities.rod1.endY)
+    ) {
+      entities.rod1.color = 'red';
+    } else {
+      entities.rod1.color = 'black';
+    }
 }
