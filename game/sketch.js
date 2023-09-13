@@ -5,6 +5,7 @@ class Player {
     this.positionY = positionY;
     this.velocityX = 0;
     this.velocityY = 0;
+    this.radius = 80;
   }
 
   moveTowardsMouse() {
@@ -32,9 +33,11 @@ class Player {
   }
 
   show() {
-    ellipse(this.positionX,this.positionY,80,80);
+    ellipse(this.positionX,this.positionY,this.radius,this.radius);
   }
 }
+
+var d = null;
 
 class Rod {
   constructor(startX, startY, endX, endY) {
@@ -42,13 +45,39 @@ class Rod {
     this.startY = startY;
     this.endX = endX;
     this.endY = endY;
+    this.color = 'black';
   }
 
   show() {
+    stroke(this.color);
     strokeWeight(20);
     line(this.startX, this.startY, this.endX, this.endY);
     strokeWeight(1);
+    stroke('black');
   }
+}
+
+function checkCollisionRodPlayer(player, rod) {  
+  let v1x = player.positionX-rod.startX;
+  let v1y = player.positionY-rod.startY;
+
+  let v2x = rod.endX-rod.startX;
+  let v2y = rod.endY-rod.startY;
+  let L = Math.sqrt(v2x*v2x+v2y*v2y)
+
+  let ux = v2x / L;
+  let uy = v2y / L;
+
+  let dot = Math.sqrt(v1x*ux + v1y*uy);
+
+  let v3x = dot*ux;
+  let v3y = dot*uy;
+
+  let v4x = v1x - v3x; 
+  let v4y = v1y - v3y; 
+  let dv4 = Math.sqrt(v4x*v4x + v4y*v4y);
+  d = dv4;
+  return (dv4 < player.radius);
 }
 
 function rodTouchesPlayer(rod, player) {
@@ -66,7 +95,7 @@ function rodTouchesPlayer(rod, player) {
   let touchPointY = rod.startY + k*vectorToRodY;
   fill(100,0,0);
   ellipse(touchPointX, touchPointY, 10, 10);
-  console.log(touchPointX, touchPointY, 10, 10);
+  // console.log(touchPointX, touchPointY, 10, 10);
 }
 
 var entities = {}
@@ -75,7 +104,7 @@ function setup() {
   createCanvas(800, 800);
   frameRate(24);
   entities.player = new Player(280,80);
-  entities.rod1 = new Rod(10,10,110,120);
+  entities.rod1 = new Rod(100,100,110,300);
 }
 
 function draw() {
@@ -83,5 +112,13 @@ function draw() {
     entities.player.moveTowardsMouse();
     entities.player.show();
     entities.rod1.show();
-    rodTouchesPlayer(entities.player, entities.rod1);
+    a = checkCollisionRodPlayer(entities.player, entities.rod1);
+    rod2 = {...entities.rod1};
+    rod2.startX = entities.rod1.endX;
+    rod2.startY = entities.rod1.endY;
+    rod2.endX = entities.rod1.startX;
+    rod2.endY = entities.rod1.startY;
+    b = checkCollisionRodPlayer(entities.player, rod2)
+    if (a || b) {entities.rod1.color = "red";} else {entities.rod1.color = "black";}
+
 }
