@@ -16,7 +16,7 @@ class Player {
 
     let force = 0.2;
     if (mouseIsPressed) { 
-      force = 5
+      force = 10;
     }
 
     let ax = dx*abs(dx)/(r*r+0.001) * force; 
@@ -37,7 +37,21 @@ class Player {
   }
 }
 
-var d = null;
+class Ore {
+
+  constructor(positionX, positionY) {
+    this.positionX = positionX;
+    this.positionY = positionY;
+    this.radius = 5;
+  }
+
+  show() {
+    fill('red');
+    ellipse(this.positionX,this.positionY,2*this.radius,2*this.radius);
+    fill('black');
+  }
+
+}
 
 class Rod {
   constructor(startX, startY, endX, endY) {
@@ -97,69 +111,71 @@ function checkLineAndCircleCollision(
 
 }
 
-function checkCollisionRodPlayer(player, rod) {  
-  let v1x = player.positionX-rod.startX;
-  let v1y = player.positionY-rod.startY;
+function checkCircleAndCirleCollision(
+  cx1, cy1, r1, cx2, cy2, r2 
+) {
+  let dx = cx1-cx2;
+  let dy = cy1-cy2;
+  let dd = Math.sqrt(dx*dx+dy*dy);
 
-  let v2x = rod.endX-rod.startX;
-  let v2y = rod.endY-rod.startY;
-  let L = Math.sqrt(v2x*v2x+v2y*v2y)
-
-  let ux = v2x / L;
-  let uy = v2y / L;
-
-  let dot = Math.sqrt(v1x*ux + v1y*uy);
-
-  let v3x = dot*ux;
-  let v3y = dot*uy;
-
-  let v4x = v1x - v3x; 
-  let v4y = v1y - v3y; 
-  let dv4 = Math.sqrt(v4x*v4x + v4y*v4y);
-  d = dv4;
-  return (dv4 < player.radius);
+  return dd<=(r1+r2);
 }
 
-function rodTouchesPlayer(rod, player) {
-  // taken from https://stackoverflow.com/a/1079478
-  let vectorToPlayerX = rod.startX - player.positionX; 
-  let vectorToPlayerY = rod.startY - player.positionY; 
-
-  let vectorToRodX = rod.startX - rod.endX;
-  let vectorToRodY = rod.startY - rod.endY;
-
-  let dotPlayerRod = vectorToPlayerX*vectorToRodX + vectorToPlayerY*vectorToRodY;
-  let dotRodRod = vectorToRodX*vectorToRodX + vectorToRodY*vectorToRodY;
-  let k = dotPlayerRod / dotRodRod; 
-  let touchPointX = rod.startX + k*vectorToRodX
-  let touchPointY = rod.startY + k*vectorToRodY;
-  fill(100,0,0);
-  ellipse(touchPointX, touchPointY, 10, 10);
-  // console.log(touchPointX, touchPointY, 10, 10);
+function spawnOre() {
+  entities.ores.push(
+    new Ore( Math.ceil(Math.random() * 800), Math.ceil(Math.random()*800) )
+  )
 }
 
-var entities = {}
+var entities = {
+  player: null,
+  obstacles: [],
+  ores: []
+};
+const WIDTH = 800;
+const HEIGHT = 800;
 
 function setup() {
   createCanvas(800, 800);
-  frameRate(24);
-  entities.player = new Player(280,80);
-  entities.rod1 = new Rod(100,100,150,300);
+  frameRate(83);
+  entities.player = new Player(400,400);
+  entities.obstacles.push(
+    new Rod(0,0,0,HEIGHT),
+    new Rod(WIDTH,0,WIDTH,HEIGHT),
+    new Rod(0,0,WIDTH,0),
+    new Rod(0,HEIGHT,WIDTH,HEIGHT),
+  )
 }
 
 function draw() {
     background(220);
     entities.player.moveTowardsMouse();
-    entities.player.show();
-    entities.rod1.show();
-    if (checkLineAndCircleCollision(
-      entities.player.positionX, entities.player.positionY, 
-      entities.player.radius, 
-      entities.rod1.startX, entities.rod1.startY, 
-      entities.rod1.endX, entities.rod1.endY)
-    ) {
-      entities.rod1.color = 'red';
-    } else {
-      entities.rod1.color = 'black';
+
+    entities.obstacles.forEach(obs => {
+      if (checkLineAndCircleCollision(
+        entities.player.positionX, entities.player.positionY, entities.player.radius,
+        obs.startX, obs.startY, obs.endX, obs.endY
+      )) {
+        obs.color = 'red';
+        alert("GAME OVER!!!");
+        window.location.reload();
+      } else {
+        obs.color = 'black';
+      }
+    })
+
+    if (entities.ores.length==0) {
+      spawnOre();
     }
+
+    if (checkCircleAndCirleCollision(
+      entities.player.positionX, entities.player.positionY, entities.player.radius,
+      entities.ores[0].positionX, entities.ores[0].positionY, entities.ores[0].radius,
+    )) {
+      entities.ores.pop();
+    }
+
+    entities.player.show();
+    entities.obstacles.forEach(obs => obs.show());
+    entities.ores.forEach(ore => ore.show());
 }
