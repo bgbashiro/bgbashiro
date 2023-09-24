@@ -16,8 +16,8 @@ class Player {
 
     let force = 0.1;
     if (mouseIsPressed && (fuel>0)) { 
-      force = 7;
-      fuel -= 5;
+      force = 4;
+      fuel -= 2.5;
     }
 
     let ax = dx*abs(dx)/(r*r+0.001) * force; 
@@ -124,7 +124,7 @@ function checkCircleAndCirleCollision(
 
 function spawnOre() {
   entities.ores.push(
-    new Ore( Math.ceil(Math.random() * 800), Math.ceil(Math.random()*800) )
+    new Ore( Math.ceil(10 + Math.random() * 780), 35 + Math.ceil(Math.random()*775) )
   )
 }
 
@@ -133,17 +133,40 @@ var entities = {
   obstacles: [],
   ores: []
 };
+
 var fuel = 100;
 var health = 100;
 const WIDTH = 800;
 const HEIGHT = 800;
 var gameState = 0;
 var startButton;
+var oreCounter = 0;
+var timer = 0;
+var level = 1;
 
 function resetWorld() {
   fuel = 100;
   health = 100;
+  entities = {
+    player: null,
+    obstacles: [],
+    ores: []
+  };
   entities.player = new Player(400,400);
+  oreCounter = 0;
+  frameCount = 0;
+}
+
+function setLevelOne() {
+  entities.obstacles.push(
+    new Rod(0,50,0,HEIGHT),
+    new Rod(WIDTH,50,WIDTH,HEIGHT),
+    new Rod(0,50,WIDTH,50),
+    new Rod(0,HEIGHT,WIDTH,HEIGHT),
+  )
+}
+
+function setLevelTwo() {
   entities.obstacles.push(
     new Rod(0,50,0,HEIGHT),
     new Rod(WIDTH,50,WIDTH,HEIGHT),
@@ -151,19 +174,29 @@ function resetWorld() {
     new Rod(0,HEIGHT,WIDTH,HEIGHT),
     new Rod(WIDTH/2,HEIGHT/3,WIDTH,HEIGHT/3),
   )
-  
+}
 
+function setLevelThree() {
+  entities.obstacles.push(
+    new Rod(0,50,0,HEIGHT),
+    new Rod(WIDTH,50,WIDTH,HEIGHT),
+    new Rod(0,50,WIDTH,50),
+    new Rod(0,HEIGHT,WIDTH,HEIGHT),
+    new Rod(WIDTH/2,HEIGHT/3,WIDTH,HEIGHT/3),
+    new Rod(0,2*HEIGHT/3,WIDTH/2,2*HEIGHT/3),
+  )
 }
 
 function setup() {
   createCanvas(800, 800);
-  frameRate(83);
+  frameRate(60);
   startButton = createButton("START");
   startButton.position(WIDTH/2, HEIGHT/2);
   startButton.size(80, 20);
   startButton.mousePressed(()=>{
     gameState=1;
     resetWorld();
+    setLevelOne();
   });
   startButton.hide()
 }
@@ -185,7 +218,7 @@ function drawGamePlay() {
       )) {
         obs.color = 'red';
         let speed = Math.sqrt(entities.player.velocityX*entities.player.velocityX+entities.player.velocityY*entities.player.velocityY);
-        health -= 1 + speed * 1.5;
+        health -= Math.min(1 + speed * 1.2, 50);
         if (health<=0){gameState = 0};
         entities.player.velocityX*=-1.1;
         entities.player.velocityY*=-1.1;
@@ -203,6 +236,7 @@ function drawGamePlay() {
       entities.ores[0].positionX, entities.ores[0].positionY, entities.ores[0].radius,
     )) {
       entities.ores.pop();
+      oreCounter++;
     }
 
     entities.player.show();
@@ -212,15 +246,21 @@ function drawGamePlay() {
     if ((fuel<100)&&(!mouseIsPressed)) {fuel+=0.5};
     if (health<100){health+=0.05};
 
-    rect(WIDTH*0.8, 0, 100, 25);
-    fill('green');
-    rect(WIDTH*0.8, 0, Math.max(0,fuel), 25);
+    rect(WIDTH*0.85, 0, 100, 25);
+    fill('red');
+    rect(WIDTH*0.85, 0, Math.max(0,health), 25);
     fill('black');
 
-    rect(WIDTH*0.1, 0, 100, 25);
-    fill('red');
-    rect(WIDTH*0.1, 0, Math.max(0,health), 25);
+    rect(WIDTH*0.85, 25, 100, 25);
+    fill('green');
+    rect(WIDTH*0.85, 25, Math.max(0,fuel), 25);
     fill('black');
+
+    text(oreCounter, 10, 25);
+    text(timer, 10, 40);
+    timer = Math.ceil(frameCount/60);
+
+
 }
 
 function draw() {
@@ -233,5 +273,21 @@ function draw() {
       break;
     default:
       break;
+  }
+  if ((oreCounter>=10) && (timer <= 30)) {
+    if (level==1) {
+      level = 2;
+      resetWorld();
+      setLevelTwo();
+    } else if (level == 2) {
+      level = 3;
+      resetWorld();
+      setLevelThree();
+    } else if (level == 3) {
+      level=1;
+      gameState = 0;
+    }
+  } else if (timer > 30) {
+    gameState = 0;
   }
 }
