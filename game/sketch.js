@@ -14,10 +14,10 @@ class Player {
 
     let r = sqrt(dx*dx + dy*dy);
 
-    let force = 0.2;
+    let force = 0.1;
     if (mouseIsPressed && (fuel>0)) { 
       force = 7;
-      fuel -= 10;
+      fuel -= 5;
     }
 
     let ax = dx*abs(dx)/(r*r+0.001) * force; 
@@ -137,10 +137,12 @@ var fuel = 100;
 var health = 100;
 const WIDTH = 800;
 const HEIGHT = 800;
+var gameState = 0;
+var startButton;
 
-function setup() {
-  createCanvas(800, 800);
-  frameRate(83);
+function resetWorld() {
+  fuel = 100;
+  health = 100;
   entities.player = new Player(400,400);
   entities.obstacles.push(
     new Rod(0,50,0,HEIGHT),
@@ -149,9 +151,30 @@ function setup() {
     new Rod(0,HEIGHT,WIDTH,HEIGHT),
     new Rod(WIDTH/2,HEIGHT/3,WIDTH,HEIGHT/3),
   )
+  
+
 }
 
-function draw() {
+function setup() {
+  createCanvas(800, 800);
+  frameRate(83);
+  startButton = createButton("START");
+  startButton.position(WIDTH/2, HEIGHT/2);
+  startButton.size(80, 20);
+  startButton.mousePressed(()=>{
+    gameState=1;
+    resetWorld();
+  });
+  startButton.hide()
+}
+
+function drawWelcomScreen() {
+  background(220);
+  startButton.show()
+}
+
+function drawGamePlay() {
+    startButton.hide();
     background(220);
     entities.player.moveTowardsMouse();
 
@@ -162,8 +185,8 @@ function draw() {
       )) {
         obs.color = 'red';
         let speed = Math.sqrt(entities.player.velocityX*entities.player.velocityX+entities.player.velocityY*entities.player.velocityY);
-        health -= 1 + speed * 2;
-        if (health<=0){window.location.reload()};
+        health -= 1 + speed * 1.5;
+        if (health<=0){gameState = 0};
         entities.player.velocityX*=-1.1;
         entities.player.velocityY*=-1.1;
       } else {
@@ -186,16 +209,29 @@ function draw() {
     entities.obstacles.forEach(obs => obs.show());
     entities.ores.forEach(ore => ore.show());
 
-    if ((fuel<100)&&(!mouseIsPressed)) {fuel+=4};
-    if (health<100){health+=0.02};
+    if ((fuel<100)&&(!mouseIsPressed)) {fuel+=0.5};
+    if (health<100){health+=0.05};
 
     rect(WIDTH*0.8, 0, 100, 25);
     fill('green');
-    rect(WIDTH*0.8, 0, fuel, 25);
+    rect(WIDTH*0.8, 0, Math.max(0,fuel), 25);
     fill('black');
 
     rect(WIDTH*0.1, 0, 100, 25);
     fill('red');
     rect(WIDTH*0.1, 0, Math.max(0,health), 25);
     fill('black');
+}
+
+function draw() {
+  switch (gameState) {
+    case 0:
+      drawWelcomScreen();
+      break;
+    case 1:
+      drawGamePlay()
+      break;
+    default:
+      break;
+  }
 }
