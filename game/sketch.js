@@ -15,8 +15,9 @@ class Player {
     let r = sqrt(dx*dx + dy*dy);
 
     let force = 0.2;
-    if (mouseIsPressed) { 
-      force = 10;
+    if (mouseIsPressed && (fuel>0)) { 
+      force = 7;
+      fuel -= 10;
     }
 
     let ax = dx*abs(dx)/(r*r+0.001) * force; 
@@ -132,6 +133,8 @@ var entities = {
   obstacles: [],
   ores: []
 };
+var fuel = 100;
+var health = 100;
 const WIDTH = 800;
 const HEIGHT = 800;
 
@@ -140,10 +143,11 @@ function setup() {
   frameRate(83);
   entities.player = new Player(400,400);
   entities.obstacles.push(
-    new Rod(0,0,0,HEIGHT),
-    new Rod(WIDTH,0,WIDTH,HEIGHT),
-    new Rod(0,0,WIDTH,0),
+    new Rod(0,50,0,HEIGHT),
+    new Rod(WIDTH,50,WIDTH,HEIGHT),
+    new Rod(0,50,WIDTH,50),
     new Rod(0,HEIGHT,WIDTH,HEIGHT),
+    new Rod(WIDTH/2,HEIGHT/3,WIDTH,HEIGHT/3),
   )
 }
 
@@ -157,8 +161,11 @@ function draw() {
         obs.startX, obs.startY, obs.endX, obs.endY
       )) {
         obs.color = 'red';
-        alert("GAME OVER!!!");
-        window.location.reload();
+        let speed = Math.sqrt(entities.player.velocityX*entities.player.velocityX+entities.player.velocityY*entities.player.velocityY);
+        health -= 1 + speed * 2;
+        if (health<=0){window.location.reload()};
+        entities.player.velocityX*=-1.1;
+        entities.player.velocityY*=-1.1;
       } else {
         obs.color = 'black';
       }
@@ -178,4 +185,17 @@ function draw() {
     entities.player.show();
     entities.obstacles.forEach(obs => obs.show());
     entities.ores.forEach(ore => ore.show());
+
+    if ((fuel<100)&&(!mouseIsPressed)) {fuel+=4};
+    if (health<100){health+=0.02};
+
+    rect(WIDTH*0.8, 0, 100, 25);
+    fill('green');
+    rect(WIDTH*0.8, 0, fuel, 25);
+    fill('black');
+
+    rect(WIDTH*0.1, 0, 100, 25);
+    fill('red');
+    rect(WIDTH*0.1, 0, Math.max(0,health), 25);
+    fill('black');
 }
