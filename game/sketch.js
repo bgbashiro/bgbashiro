@@ -128,6 +128,9 @@ function spawnOre() {
   )
 }
 
+
+// --- Global variables / objects --- //
+
 var entities = {
   player: null,
   obstacles: [],
@@ -143,6 +146,8 @@ var startButton;
 var oreCounter = 0;
 var timer = 0;
 var level = 1;
+
+// ------------------------ //
 
 function resetWorld() {
   fuel = 100;
