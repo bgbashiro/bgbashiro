@@ -10,8 +10,9 @@ I am just adding random "content" here. Most stuff I do for fun.
 
 ### Progress
 
-- [x] Engine
+- [ ] Engine
     - [x] Colisio detection
+        - [ ] support for polygons
     - [x] Spaceship control
 - [ ] Gameplay
     - [ ] Game state manager
@@ -22,6 +23,7 @@ I am just adding random "content" here. Most stuff I do for fun.
 - [ ] Visuals/Artwork
     - [ ] Spaceship
     - [ ] Obstacles
+
 - [ ] Enhancements
     - [ ] Level Editor
     - [ ] Online leaderboard
