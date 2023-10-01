@@ -126,9 +126,6 @@ function checkCircleAndCirleCollision(
   return dd <= (r1 + r2);
 }
 
-
-
-
 // --- Global variables / objects --- //
 
 const WIDTH = 800;
@@ -158,6 +155,7 @@ class GameManager {
     };
     this.entities.player = new Player(400, 400);
     this.oreCounter = 0;
+    this.timer = 0;
     this.frameCount = 0;
   }
 
@@ -217,7 +215,16 @@ function setup() {
 
 function drawWelcomScreen() {
   background(220);
-  gm.startButton.show()
+  gm.startButton.show();
+}
+
+function drawLoadScreen() {
+  gm.startButton.hide();
+  background(220);
+  if (gm.timer >= 3) {gm.gameState = 2};
+
+  text(3-gm.timer, WIDTH/2, HEIGHT/2);
+
 }
 
 function drawGamePlay() {
@@ -233,7 +240,7 @@ function drawGamePlay() {
       obs.color = 'red';
       let speed = Math.sqrt(gm.entities.player.velocityX * gm.entities.player.velocityX + gm.entities.player.velocityY * gm.entities.player.velocityY);
       gm.entities.player.health -= Math.min(1 + speed * 1.2, 50);
-      if (gm.entities.player.health <= 0) { gameState = 0 };
+      if (gm.entities.player.health <= 0) { gm.gameState = 0 };
       gm.entities.player.velocityX *= -1.1;
       gm.entities.player.velocityY *= -1.1;
     } else {
@@ -272,8 +279,26 @@ function drawGamePlay() {
 
   text(gm.oreCounter, 10, 25);
   text(gm.timer, 10, 40);
-  gm.timer = Math.ceil(frameCount / 60);
 
+  if ((gm.oreCounter >= 10) && (gm.timer <= 30)) {
+    if (gm.level == 1) {
+      gm.gameState = 1;
+      gm.level = 2;
+      gm.reset();
+      gm.setLevelTwo();
+    } else if (gm.level == 2) {
+      gm.gameState = 1;
+      gm.level = 3;
+      gm.reset();
+      gm.setLevelThree();
+    } else if (gm.level == 3) {
+      gm.gameState = 1;
+      gm.level = 1;
+      gm.gameState = 0;
+    }
+  } else if (gm.timer > 30) {
+    gm.gameState = 0;
+  }
 
 }
 
@@ -283,27 +308,17 @@ function draw() {
     case 0:
       drawWelcomScreen();
       break;
-    // Level Intro  
     case 1:
-      drawGamePlay()
+      drawLoadScreen();
+      break;
+    case 2:
+      drawGamePlay();
       break;
     default:
       break;
   }
-  if ((gm.oreCounter >= 10) && (gm.timer <= 30)) {
-    if (gm.level == 1) {
-      gm.level = 2;
-      gm.reset();
-      gm.setLevelTwo();
-    } else if (level == 2) {
-      gm.level = 3;
-      gm.reset();
-      gm.setLevelThree();
-    } else if (level == 3) {
-      gm.level = 1;
-      gm.gameState = 0;
-    }
-  } else if (gm.timer > 30) {
-    gm.gameState = 0;
-  }
+
+
+  gm.frameCount++;
+  gm.timer = Math.ceil(gm.frameCount / 60);
 }
