@@ -160,9 +160,15 @@ class GameManager {
   }
 
   spawnOre() {
-    this.entities.ores.push(
-      new Ore(Math.ceil(10 + Math.random() * 780), 35 + Math.ceil(Math.random() * 775))
-    )
+    let ore = new Ore(Math.ceil(10 + Math.random() * 780), 35 + Math.ceil(Math.random() * 775))
+    while (gm.entities.obstacles
+      .map(obs => checkLineAndCircleCollision(ore.positionX, ore.positionY, ore.radius, obs.startX, obs.startY, obs.endX, obs.endY))
+      .reduce((a,b) => {return a||b})
+      )
+      {
+        ore = new Ore(Math.ceil(10 + Math.random() * 780), 35 + Math.ceil(Math.random() * 775))
+      }
+    this.entities.ores.push(ore)
   }
 
   setLevelOne() {
@@ -223,7 +229,7 @@ function drawLoadScreen() {
   background(220);
   if (gm.timer >= 3) {gm.gameState = 2};
 
-  text(3-gm.timer, WIDTH/2, HEIGHT/2);
+  text(4-gm.timer, WIDTH/2, HEIGHT/2);
 
 }
 
