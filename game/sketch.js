@@ -140,8 +140,10 @@ class GameManager {
       ores: []
     }
 
-    this.gameState = 0;
+    this.gameState = "INIT";
     this.startButton;
+    this.nextButton;
+    this.replayButton;
     this.oreCounter = 0;
     this.timer = 0;
     this.level = 1;
@@ -163,78 +165,138 @@ class GameManager {
     let ore = new Ore(Math.ceil(10 + Math.random() * 780), 35 + Math.ceil(Math.random() * 775))
     while (gm.entities.obstacles
       .map(obs => checkLineAndCircleCollision(ore.positionX, ore.positionY, ore.radius, obs.startX, obs.startY, obs.endX, obs.endY))
-      .reduce((a,b) => {return a||b})
-      )
-      {
-        ore = new Ore(Math.ceil(10 + Math.random() * 780), 35 + Math.ceil(Math.random() * 775))
-      }
+      .reduce((a, b) => { return a || b }, false)
+    ) {
+      ore = new Ore(Math.ceil(10 + Math.random() * 780), 35 + Math.ceil(Math.random() * 775))
+    }
     this.entities.ores.push(ore)
   }
 
-  setLevelOne() {
-    this.entities.obstacles.push(
-      new Rod(0, 50, 0, HEIGHT),
-      new Rod(WIDTH, 50, WIDTH, HEIGHT),
-      new Rod(0, 50, WIDTH, 50),
-      new Rod(0, HEIGHT, WIDTH, HEIGHT),
-    )
-  }
+  setLevel() {
+    switch (this.level) {
+      case 1:
+        this.entities.obstacles.push(
+          new Rod(0, 50, 0, HEIGHT),
+          new Rod(WIDTH, 50, WIDTH, HEIGHT),
+          new Rod(0, 50, WIDTH, 50),
+          new Rod(0, HEIGHT, WIDTH, HEIGHT),
+        )
+        break;
+      case 2:
+        this.entities.obstacles.push(
+          new Rod(0, 50, 0, HEIGHT),
+          new Rod(WIDTH, 50, WIDTH, HEIGHT),
+          new Rod(0, 50, WIDTH, 50),
+          new Rod(0, HEIGHT, WIDTH, HEIGHT),
+          new Rod(WIDTH / 2, HEIGHT / 3, WIDTH, HEIGHT / 3),
+        )
+        break;
+      case 3:
+        this.entities.obstacles.push(
+          new Rod(0, 50, 0, HEIGHT),
+          new Rod(WIDTH, 50, WIDTH, HEIGHT),
+          new Rod(0, 50, WIDTH, 50),
+          new Rod(0, HEIGHT, WIDTH, HEIGHT),
+          new Rod(WIDTH / 2, HEIGHT / 3, WIDTH, HEIGHT / 3),
+          new Rod(0, 2 * HEIGHT / 3, WIDTH / 2, 2 * HEIGHT / 3),
+        )
+        break
+      default:
+        break;
+    }
 
-  setLevelTwo() {
-    this.entities.obstacles.push(
-      new Rod(0, 50, 0, HEIGHT),
-      new Rod(WIDTH, 50, WIDTH, HEIGHT),
-      new Rod(0, 50, WIDTH, 50),
-      new Rod(0, HEIGHT, WIDTH, HEIGHT),
-      new Rod(WIDTH / 2, HEIGHT / 3, WIDTH, HEIGHT / 3),
-    )
-  }
-
-  setLevelThree() {
-    this.entities.obstacles.push(
-      new Rod(0, 50, 0, HEIGHT),
-      new Rod(WIDTH, 50, WIDTH, HEIGHT),
-      new Rod(0, 50, WIDTH, 50),
-      new Rod(0, HEIGHT, WIDTH, HEIGHT),
-      new Rod(WIDTH / 2, HEIGHT / 3, WIDTH, HEIGHT / 3),
-      new Rod(0, 2 * HEIGHT / 3, WIDTH / 2, 2 * HEIGHT / 3),
-    )
   }
 
 };
 
+
+
 var gm = new GameManager();
 
 function setup() {
-  createCanvas(800, 800);
-  frameRate(60);
+  let viewport = document.getElementById("viewport");
+
+  let cnv = createCanvas(800, 800);
+  cnv.parent(viewport);
+
   gm.startButton = createButton("START");
-  gm.startButton.position(WIDTH / 2, HEIGHT / 2);
-  gm.startButton.size(80, 20);
+  gm.startButton.parent(viewport);
+  gm.startButton.class("gameButton");
   gm.startButton.mousePressed(() => {
-    gm.gameState = 1;
+    gm.gameState = "INTRO";
     gm.reset();
-    gm.setLevelOne();
   });
-  gm.startButton.hide()
+  gm.startButton.hide();
+  gm.startButton.center();
+
+  gm.nextButton = createButton("NEXT");
+  gm.nextButton.parent(viewport);
+  gm.nextButton.class("gameButton");
+  gm.nextButton.mousePressed(() => {
+    gm.gameState = "INTRO";
+    gm.reset();
+    gm.level++;
+    gm.nextButton.hide();
+  });
+  gm.nextButton.hide();
+  gm.nextButton.position(WIDTH/2, HEIGHT/3);
+
+  gm.replayButton = createButton("REPLAY");
+  gm.replayButton.parent(viewport);
+  gm.replayButton.class("gameButton");
+  gm.replayButton.mousePressed(() => {
+    gm.gameState = "INTRO";
+    gm.reset();
+    gm.replayButton.hide();
+  });
+  gm.replayButton.hide();
+  gm.nextButton.position(WIDTH/2, 2*HEIGHT/3);
+
+  frameRate(60);
 }
 
-function drawWelcomScreen() {
+function drawWelcome() {
   background(220);
+  text("You are a pilot controlling a spaceship", 50, 50);
   gm.startButton.show();
 }
 
-function drawLoadScreen() {
+function drawIntro() {
   gm.startButton.hide();
   background(220);
-  if (gm.timer >= 3) {gm.gameState = 2};
 
-  text(4-gm.timer, WIDTH/2, HEIGHT/2);
+  gm.entities.player.show();
+  gm.entities.obstacles.forEach(obs => obs.show());
+  gm.entities.ores.forEach(ore => ore.show());
+  if (gm.timer >= 3) {
+    gm.setLevel();
+    gm.gameState = "PLAY";
+  }
+
+  text(4 - gm.timer, WIDTH / 2, HEIGHT / 2);
 
 }
 
+function drawOutroWin() {
+  gm.startButton.hide();
+  background(220);
+  text("Congratz. You are qualified to go to next level.", 50, 50);
+  gm.nextButton.show();
+  gm.replayButton.show();
+}
+
+function drawOutroLose() {
+  gm.startButton.hide();
+  background(220);
+  text("Too slow. You need to pass for next level.", 50, 50);
+  gm.replayButton.show();
+}
+
+
 function drawGamePlay() {
   gm.startButton.hide();
+  gm.nextButton.hide();
+  gm.replayButton.hide();
   background(220);
   gm.entities.player.moveTowardsMouse();
 
@@ -246,7 +308,7 @@ function drawGamePlay() {
       obs.color = 'red';
       let speed = Math.sqrt(gm.entities.player.velocityX * gm.entities.player.velocityX + gm.entities.player.velocityY * gm.entities.player.velocityY);
       gm.entities.player.health -= Math.min(1 + speed * 1.2, 50);
-      if (gm.entities.player.health <= 0) { gm.gameState = 0 };
+      if (gm.entities.player.health <= 0) { gm.gameState = "OUTROLOSE" };
       gm.entities.player.velocityX *= -1.1;
       gm.entities.player.velocityY *= -1.1;
     } else {
@@ -286,24 +348,14 @@ function drawGamePlay() {
   text(gm.oreCounter, 10, 25);
   text(gm.timer, 10, 40);
 
-  if ((gm.oreCounter >= 10) && (gm.timer <= 30)) {
-    if (gm.level == 1) {
-      gm.gameState = 1;
-      gm.level = 2;
-      gm.reset();
-      gm.setLevelTwo();
-    } else if (gm.level == 2) {
-      gm.gameState = 1;
-      gm.level = 3;
-      gm.reset();
-      gm.setLevelThree();
-    } else if (gm.level == 3) {
-      gm.gameState = 1;
-      gm.level = 1;
-      gm.gameState = 0;
+  if ((gm.oreCounter >= 2) && (gm.timer <= 10)) {
+    if (gm.level === 3) {
+      gm.gameState = "FINISH";
+    } else {
+      gm.gameState = "OUTROWIN";
     }
-  } else if (gm.timer > 30) {
-    gm.gameState = 0;
+  } else if (gm.timer > 10) {
+    gm.gameState = "OUTROLOSE";
   }
 
 }
@@ -311,19 +363,27 @@ function drawGamePlay() {
 function draw() {
   switch (gm.gameState) {
     // Start Screen
-    case 0:
-      drawWelcomScreen();
+    case "INIT":
+      drawWelcome();
       break;
-    case 1:
-      drawLoadScreen();
+    case "INTRO":
+      drawIntro();
       break;
-    case 2:
+    case "OUTROWIN":
+      drawOutroWin();
+      break;
+    case "OUTROLOSE":
+      drawOutroLose();
+      break;
+    case "PLAY":
       drawGamePlay();
+      break;
+    case "FINISH":
+      drawFinish();
       break;
     default:
       break;
   }
-
 
   gm.frameCount++;
   gm.timer = Math.ceil(gm.frameCount / 60);
