@@ -11,14 +11,14 @@ I am just adding random "content" here. Most stuff I do for fun.
 ### Progress
 
 - [ ] Engine
-    - [x] Colisio detection
+    - [x] Colision detection
         - [ ] support for polygons
     - [x] Spaceship control
 - [ ] Gameplay
     - [ ] Game state manager
+        - INIT, INTRO, PLAY, OUTRO, FINISH
     - [x] Timer
     - [x] Counter
-    - [ ] Dialogue system
     - [ ] 10 Levels
 - [ ] Visuals/Artwork
     - [ ] Spaceship
@@ -27,3 +27,4 @@ I am just adding random "content" here. Most stuff I do for fun.
 - [ ] Enhancements
     - [ ] Level Editor
     - [ ] Online leaderboard
+    - [ ] Dialogue system

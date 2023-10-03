@@ -1,131 +1,3 @@
-class Player {
-
-  constructor(positionX, positionY) {
-    this.positionX = positionX;
-    this.positionY = positionY;
-    this.velocityX = 0;
-    this.velocityY = 0;
-    this.radius = 25;
-
-    this.fuel = 100;
-    this.health = 100;
-
-  }
-
-  moveTowardsMouse() {
-    let dx = mouseX - this.positionX;
-    let dy = mouseY - this.positionY;
-
-    let r = sqrt(dx * dx + dy * dy);
-
-    let force = 0.1;
-    if (mouseIsPressed && (this.fuel > 0)) {
-      force = 4;
-      this.fuel -= 2.5;
-    }
-
-    let ax = dx * abs(dx) / (r * r + 0.001) * force;
-    let ay = dy * abs(dy) / (r * r + 0.001) * force;
-
-    this.velocityX += ax;
-    this.velocityY += ay;
-
-    this.positionX += this.velocityX;
-    this.positionY += this.velocityY;
-
-    this.velocityX *= 0.9;
-    this.velocityY *= 0.9;
-  }
-
-  show() {
-    ellipse(this.positionX, this.positionY, 2 * this.radius, 2 * this.radius);
-  }
-}
-
-class Ore {
-
-  constructor(positionX, positionY) {
-    this.positionX = positionX;
-    this.positionY = positionY;
-    this.radius = 5;
-  }
-
-  show() {
-    fill('red');
-    ellipse(this.positionX, this.positionY, 2 * this.radius, 2 * this.radius);
-    fill('black');
-  }
-
-}
-
-class Rod {
-  constructor(startX, startY, endX, endY) {
-    this.startX = startX;
-    this.startY = startY;
-    this.endX = endX;
-    this.endY = endY;
-    this.color = 'black';
-  }
-
-  show() {
-    stroke(this.color);
-    strokeWeight(5);
-    line(this.startX, this.startY, this.endX, this.endY);
-    strokeWeight(1);
-    stroke('black');
-  }
-}
-
-function checkLineAndCircleCollision(
-  cx, cy,  // center coordinates of circle
-  r,      // radis of circle
-  x1, y1, // start of line segment
-  x2, y2  // end of line segment
-) {
-
-  xAC = cx - x1;
-  yAC = cy - y1;
-
-  xAB = x2 - x1;
-  yAB = y2 - y1;
-
-  dotACAB = xAC * xAB + yAC * yAB;
-  magnAB = xAB * xAB + yAB * yAB;
-
-  uxAB = xAB / magnAB;
-  uyAB = yAB / magnAB;
-
-  xAD = uxAB * dotACAB;
-  yAD = uyAB * dotACAB;
-
-  projX = x1 + xAD;
-  projY = y1 + yAD;
-
-  dx = projX - cx;
-  dy = projY - cy;
-  dd = Math.sqrt(dx * dx + dy * dy);
-
-  if (
-    (dd <= r) && (projX <= (r + Math.max(x1, x2))) && (projY <= (r + Math.max(y1, y2)))
-    && (projX >= (Math.min(x1, x2) - r)) && (projY >= (Math.min(y1, y2) - r))
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-
-}
-
-function checkCircleAndCirleCollision(
-  cx1, cy1, r1, cx2, cy2, r2
-) {
-  let dx = cx1 - cx2;
-  let dy = cy1 - cy2;
-  let dd = Math.sqrt(dx * dx + dy * dy);
-
-  return dd <= (r1 + r2);
-}
-
 // --- Global variables / objects --- //
 
 const WIDTH = 800;
@@ -155,7 +27,7 @@ class GameManager {
       obstacles: [],
       ores: []
     };
-    this.entities.player = new Player(400, 400);
+    this.entities.player = new Player(100, 155);
     this.oreCounter = 0;
     this.timer = 0;
     this.frameCount = 0;
@@ -188,7 +60,7 @@ class GameManager {
           new Rod(WIDTH, 50, WIDTH, HEIGHT),
           new Rod(0, 50, WIDTH, 50),
           new Rod(0, HEIGHT, WIDTH, HEIGHT),
-          new Rod(WIDTH / 2, HEIGHT / 3, WIDTH, HEIGHT / 3),
+          new Rod(WIDTH / 2, HEIGHT / 2 + 50, WIDTH, HEIGHT / 3),
         )
         break;
       case 3:
@@ -197,10 +69,134 @@ class GameManager {
           new Rod(WIDTH, 50, WIDTH, HEIGHT),
           new Rod(0, 50, WIDTH, 50),
           new Rod(0, HEIGHT, WIDTH, HEIGHT),
-          new Rod(WIDTH / 2, HEIGHT / 3, WIDTH, HEIGHT / 3),
-          new Rod(0, 2 * HEIGHT / 3, WIDTH / 2, 2 * HEIGHT / 3),
+          new Rod(WIDTH / 2 + 20, HEIGHT / 2 - 50, WIDTH, HEIGHT / 3 - 50),
+          new Rod(0, HEIGHT / 2 + 60, WIDTH / 2 + 22, 2 * HEIGHT / 3 + 60),
         )
         break
+      case 4:
+        this.entities.obstacles.push(
+          new Rod(0, 50, 0, HEIGHT),
+          new Rod(WIDTH, 50, WIDTH, HEIGHT),
+          new Rod(0, 50, WIDTH, 50),
+          new Rod(0, HEIGHT, WIDTH, HEIGHT),
+          new Rod(400, 300, 500, 400),
+          new Rod(500, 400, 400, 500),
+          new Rod(400, 500, 300, 400),
+          new Rod(300, 400, 400, 300),
+        )
+        break;
+      case 5:
+        this.entities.obstacles.push(
+          new Rod(0, 50, 0, HEIGHT),
+          new Rod(WIDTH, 50, WIDTH, HEIGHT),
+          new Rod(0, 50, WIDTH, 50),
+          new Rod(0, HEIGHT, WIDTH, HEIGHT),
+
+          new Rod(400, 200, 450, 250),
+          new Rod(450, 250, 400, 300),
+          new Rod(400, 300, 350, 250),
+          new Rod(350, 250, 400, 200),
+
+          new Rod(400, 600, 450, 650),
+          new Rod(450, 650, 400, 700),
+          new Rod(400, 700, 350, 650),
+          new Rod(350, 650, 400, 600),
+
+          new Rod(600, 400, 650, 450),
+          new Rod(650, 450, 600, 500),
+          new Rod(600, 500, 550, 450),
+          new Rod(550, 450, 600, 400),
+
+          new Rod(200, 400, 250, 450),
+          new Rod(250, 450, 200, 500),
+          new Rod(200, 500, 150, 450),
+          new Rod(150, 450, 200, 400),
+
+        )
+        break;
+      case 6:
+        this.entities.obstacles.push(
+          new Rod(0, 50, 0, HEIGHT),
+          new Rod(WIDTH, 50, WIDTH, HEIGHT),
+          new Rod(0, 50, WIDTH, 50),
+          new Rod(0, HEIGHT, WIDTH, HEIGHT),
+
+          new Rod(200, 600, 250, 650),
+          new Rod(250, 650, 200, 700),
+          new Rod(200, 700, 150, 650),
+          new Rod(150, 650, 200, 600),
+          new Rod(400, 800, 500, 600),
+
+          new Rod(600, 200, 650, 250),
+          new Rod(650, 250, 600, 300),
+          new Rod(600, 300, 550, 250),
+          new Rod(550, 250, 600, 200),
+          new Rod(400, 50, 300, 250),
+        );
+        break;
+      case 7:
+        this.entities.obstacles.push(
+          new Rod(0, 50, 0, HEIGHT),
+          new Rod(WIDTH, 50, WIDTH, HEIGHT),
+          new Rod(0, 50, WIDTH, 50),
+          new Rod(0, HEIGHT, WIDTH, HEIGHT),
+
+          new Rod(600, 200, 650, 250),
+          new Rod(650, 250, 600, 300),
+          new Rod(600, 300, 550, 250),
+          new Rod(550, 250, 600, 200),
+
+          new Rod(400, 300, 400, 500),
+
+          new Rod(200, 500, 200, 700),
+          new Rod(100, 600, 300, 600),
+
+          new Rod(100, 200, 200, 300),
+          new Rod(550, 550, 650, 650),
+        );
+        break;
+      case 8:
+        this.entities.player.positionX = 400;
+        this.entities.obstacles.push(
+          new Rod(0, 50, 0, HEIGHT),
+          new Rod(WIDTH, 50, WIDTH, HEIGHT),
+          new Rod(0, 50, WIDTH, 50),
+          new Rod(0, HEIGHT, WIDTH, HEIGHT),
+
+          new Rod(300, 300, 500, 500),
+          new Rod(500, 300, 300, 500),
+
+          new Rod(0, 200, 200, 200),
+          new Rod(100, 150, 100, 250),
+
+          new Rod(600, 200, 800, 200),
+          new Rod(700, 150, 700, 250),
+
+          new Rod(0, 600, 200, 600),
+          new Rod(600, 600, 800, 600),
+
+          new Rod(400, 550, 450, 600),
+          new Rod(450, 600, 400, 650),
+          new Rod(400, 650, 350, 600),
+          new Rod(350, 600, 400, 550),
+        );
+        break;
+      case 9:
+        this.entities.obstacles.push(
+          new Rod(0, 50, 0, HEIGHT),
+          new Rod(WIDTH, 50, WIDTH, HEIGHT),
+          new Rod(0, 50, WIDTH, 50),
+          new Rod(0, HEIGHT, WIDTH, HEIGHT),
+        );
+        break;
+      case 10:
+        this.entities.obstacles.push(
+          new Rod(0, 50, 0, HEIGHT),
+          new Rod(WIDTH, 50, WIDTH, HEIGHT),
+          new Rod(0, 50, WIDTH, 50),
+          new Rod(0, HEIGHT, WIDTH, HEIGHT),
+        );
+        break;
       default:
         break;
     }
@@ -236,10 +232,11 @@ function setup() {
     gm.gameState = "INTRO";
     gm.reset();
     gm.level++;
+    gm.level = Math.min(gm.level, 4);
     gm.nextButton.hide();
   });
   gm.nextButton.hide();
-  gm.nextButton.position(WIDTH/2, HEIGHT/3);
+  gm.nextButton.position(WIDTH / 2, HEIGHT / 3);
 
   gm.replayButton = createButton("REPLAY");
   gm.replayButton.parent(viewport);
@@ -250,7 +247,7 @@ function setup() {
     gm.replayButton.hide();
   });
   gm.replayButton.hide();
-  gm.nextButton.position(WIDTH/2, 2*HEIGHT/3);
+  gm.nextButton.position(WIDTH / 2, 2 * HEIGHT / 3);
 
   frameRate(60);
 }
@@ -348,13 +345,13 @@ function drawGamePlay() {
   text(gm.oreCounter, 10, 25);
   text(gm.timer, 10, 40);
 
-  if ((gm.oreCounter >= 2) && (gm.timer <= 10)) {
-    if (gm.level === 3) {
-      gm.gameState = "FINISH";
-    } else {
-      gm.gameState = "OUTROWIN";
-    }
-  } else if (gm.timer > 10) {
+  if ((gm.oreCounter >= 10) && (gm.timer <= 30)) {
+    // if (gm.level === 4) {
+    // gm.gameState = "FINISH";
+    // } else {
+    gm.gameState = "OUTROWIN";
+    // }
+  } else if (gm.timer > 30) {
     gm.gameState = "OUTROLOSE";
   }
 
