@@ -19,7 +19,7 @@ class Player {
     let r = sqrt(dx * dx + dy * dy);
 
     let force = 0.1;
-    if (mouseIsPressed && (this.fuel > 0)) {
+    if (keyIsDown(32) && (this.fuel > 0)) {
       force = 4;
       this.fuel -= 2.5;
     }

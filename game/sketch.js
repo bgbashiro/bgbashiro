@@ -13,9 +13,7 @@ class GameManager {
     }
 
     this.gameState = "INIT";
-    this.startButton;
-    this.nextButton;
-    this.replayButton;
+    this.buttons={};
     this.oreCounter = 0;
     this.timer = 0;
     this.level = 1;
@@ -33,6 +31,34 @@ class GameManager {
     this.frameCount = 0;
   }
 
+  initButtons() {
+    this.buttons['start'] = createButton("START");
+    this.buttons['start'].mousePressed(() => {
+      gm.gameState = "INTRO";
+      gm.reset();
+    });
+    this.buttons['start'].center();
+
+    this.buttons['next'] = createButton("NEXT");
+
+    this.buttons['next'].mousePressed(() => {
+      gm.gameState = "INTRO";
+      gm.reset();
+      gm.level++;
+      gm.level = Math.min(gm.level, 4);
+      gm.buttons['next'].hide();
+    });
+    this.buttons['next'].position(WIDTH / 2, HEIGHT / 3);
+
+    this.buttons['replay'] = createButton("REPLAY");
+    this.buttons['replay'].mousePressed(() => {
+      gm.gameState = "INTRO";
+      gm.reset();
+      gm.buttons['replay'].hide();
+    });
+    this.buttons['replay'].position(WIDTH / 2, 2 * HEIGHT / 3);
+  }
+
   spawnOre() {
     let ore = new Ore(Math.ceil(10 + Math.random() * 780), 35 + Math.ceil(Math.random() * 775))
     while (gm.entities.obstacles
@@ -43,6 +69,7 @@ class GameManager {
     }
     this.entities.ores.push(ore)
   }
+
 
   setLevel() {
     switch (this.level) {
@@ -207,47 +234,20 @@ class GameManager {
 
 
 
+
 var gm = new GameManager();
 
 function setup() {
-  let viewport = document.getElementById("viewport");
-
-  let cnv = createCanvas(800, 800);
-  cnv.parent(viewport);
-
-  gm.startButton = createButton("START");
-  gm.startButton.parent(viewport);
-  gm.startButton.class("gameButton");
-  gm.startButton.mousePressed(() => {
-    gm.gameState = "INTRO";
-    gm.reset();
+  let canvasContainer = document.getElementById("canvasContainer");
+  console.log(canvasContainer);
+  let canvas = createCanvas(800, 800);
+  canvas.parent(canvasContainer);
+  gm.initButtons()
+  Object.entries(gm.buttons).forEach(([_, btn])=>{
+    btn.parent(canvasContainer);
+    btn.class("gameButton");
+    btn.hide();
   });
-  gm.startButton.hide();
-  gm.startButton.center();
-
-  gm.nextButton = createButton("NEXT");
-  gm.nextButton.parent(viewport);
-  gm.nextButton.class("gameButton");
-  gm.nextButton.mousePressed(() => {
-    gm.gameState = "INTRO";
-    gm.reset();
-    gm.level++;
-    gm.level = Math.min(gm.level, 4);
-    gm.nextButton.hide();
-  });
-  gm.nextButton.hide();
-  gm.nextButton.position(WIDTH / 2, HEIGHT / 3);
-
-  gm.replayButton = createButton("REPLAY");
-  gm.replayButton.parent(viewport);
-  gm.replayButton.class("gameButton");
-  gm.replayButton.mousePressed(() => {
-    gm.gameState = "INTRO";
-    gm.reset();
-    gm.replayButton.hide();
-  });
-  gm.replayButton.hide();
-  gm.nextButton.position(WIDTH / 2, 2 * HEIGHT / 3);
 
   frameRate(60);
 }
@@ -255,11 +255,11 @@ function setup() {
 function drawWelcome() {
   background(220);
   text("You are a pilot controlling a spaceship", 50, 50);
-  gm.startButton.show();
+  gm.buttons['start'].show();
 }
 
 function drawIntro() {
-  gm.startButton.hide();
+  gm.buttons['start'].hide();
   background(220);
 
   gm.entities.player.show();
@@ -275,25 +275,25 @@ function drawIntro() {
 }
 
 function drawOutroWin() {
-  gm.startButton.hide();
+  gm.buttons['start'].hide();
   background(220);
   text("Congratz. You are qualified to go to next level.", 50, 50);
-  gm.nextButton.show();
-  gm.replayButton.show();
+  gm.buttons['next'].show();
+  gm.buttons['replay'].show();
 }
 
 function drawOutroLose() {
-  gm.startButton.hide();
+  gm.buttons['start'].hide();
   background(220);
   text("Too slow. You need to pass for next level.", 50, 50);
-  gm.replayButton.show();
+  gm.buttons['replay'].show();
 }
 
 
 function drawGamePlay() {
-  gm.startButton.hide();
-  gm.nextButton.hide();
-  gm.replayButton.hide();
+  gm.buttons['start'].hide();
+  gm.buttons['next'].hide();
+  gm.buttons['replay'].hide();
   background(220);
   gm.entities.player.moveTowardsMouse();
 

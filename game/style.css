@@ -1,11 +1,11 @@
-.p5Canvas {
+.canvasContainer {
     display: block;
     margin: auto;
 }
 
 .gameButton {
-    /* display: block; */
+    display: block;
     width: 100px;
     height: 20px;
-    /* margin: auto; */
+    margin: auto;
 }
