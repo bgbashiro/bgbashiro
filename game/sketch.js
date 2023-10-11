@@ -38,8 +38,7 @@ class GameManager {
     this.buttons['login'] = createButton("Login with Google");
     this.buttons['login'].position(400, 400);
     this.buttons['login'].mousePressed(() => {
-      console.log("Logged in");
-      this.updateGameState('INIT');
+      googleSignIn(() => { this.updateGameState('INIT') });
     });
 
     this.buttons['usernameForm'] = createDiv();
@@ -54,7 +53,9 @@ class GameManager {
         messageBox.elt.innerText = "You need to enter username..."
         setTimeout(() => { messageBox.elt.innerText = "" }, 2000)
       } else {
-        this.updateGameState("HOME");
+        setUsernameForCurrentUser(unameInput.elt.value, () => {
+          this.updateGameState("HOME");
+        });
       }
     })
     this.buttons['usernameForm'].child(submitBtn);
@@ -141,6 +142,12 @@ class GameManager {
         break;
       case "INIT":
         this.buttons['usernameForm'].show()
+        let unameInput = this.buttons['usernameForm'].elt.querySelector('input');
+        getCurrentUser((data) => {
+          if (data !== undefined) {
+            unameInput.value = data['displayName']
+          }
+        });
         break;
       case "HOME":
         this.buttons['levels'].show();
@@ -154,6 +161,9 @@ class GameManager {
         this.frameCount = 0;
         break;
       case "OUTRO":
+        if (gm.entities.player.health > 0) {
+          addGameScore(gm.level, gm.oreCounter);
+        }
         this.timer = 0;
         this.frameCount = 0;
         break;
