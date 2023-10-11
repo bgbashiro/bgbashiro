@@ -12,8 +12,8 @@ class GameManager {
       ores: []
     }
 
-    this.gameState = "INIT";
-    this.buttons={};
+    this.gameState = "LOGIN";
+    this.buttons = {};
     this.oreCounter = 0;
     this.timer = 0;
     this.level = 1;
@@ -32,31 +32,134 @@ class GameManager {
   }
 
   initButtons() {
+
+    // Buttons for handling login / setting username
+
+    this.buttons['login'] = createButton("Login with Google");
+    this.buttons['login'].position(400, 400);
+    this.buttons['login'].mousePressed(() => {
+      console.log("Logged in");
+      this.updateGameState('INIT');
+    });
+
+    this.buttons['usernameForm'] = createDiv();
+    this.buttons['usernameForm'].position(400, 400);
+    let messageBox = createElement("p");
+    this.buttons['usernameForm'].child(messageBox);
+    let unameInput = createInput()
+    this.buttons['usernameForm'].child(unameInput);
+    let submitBtn = createButton("Enter");
+    submitBtn.mousePressed(() => {
+      if (unameInput.elt.value === "") {
+        messageBox.elt.innerText = "You need to enter username..."
+        setTimeout(() => { messageBox.elt.innerText = "" }, 2000)
+      } else {
+        this.updateGameState("HOME");
+      }
+    })
+    this.buttons['usernameForm'].child(submitBtn);
+
+    //
+    this.buttons['levels'] = createDiv();
+    this.buttons['levels'].position(200, 200);
+
+    let div0 = createDiv();
+    let btn = createButton(`Tutorial`);
+    btn.mousePressed(() => {
+      this.level = 1;
+      this.updateGameState("INTRO");
+    })
+    div0.child(btn);
+    this.buttons['levels'].child(div0);
+
+    let div1 = createDiv();
+    for (let i = 2; i <= 4; i++) {
+      let btn = createButton(`LEVEL ${i}`);
+      btn.mousePressed(() => {
+        this.level = i;
+        this.updateGameState("INTRO");
+      })
+      div1.child(btn)
+    }
+    this.buttons['levels'].child(div1);
+
+    let div2 = createDiv();
+    for (let i = 5; i <= 7; i++) {
+      let btn = createButton(`LEVEL ${i}`);
+      btn.mousePressed(() => {
+        this.level = i;
+        this.updateGameState("INTRO");
+      })
+      div2.child(btn)
+    }
+
+    this.buttons['levels'].child(div2);
+    let div3 = createDiv();
+    for (let i = 8; i <= 8; i++) {
+      let btn = createButton(`LEVEL ${i}`);
+      btn.mousePressed(() => {
+        this.level = i;
+        this.updateGameState("INTRO");
+      })
+      div3.child(btn)
+    }
+    this.buttons['levels'].child(div3);
+
+    // ---- //
     this.buttons['start'] = createButton("START");
+    this.buttons['start'].center();
     this.buttons['start'].mousePressed(() => {
       gm.gameState = "INTRO";
       gm.reset();
     });
-    this.buttons['start'].center();
 
     this.buttons['next'] = createButton("NEXT");
-
+    this.buttons['next'].position(WIDTH / 2, HEIGHT / 3);
     this.buttons['next'].mousePressed(() => {
       gm.gameState = "INTRO";
       gm.reset();
       gm.level++;
       gm.level = Math.min(gm.level, 4);
-      gm.buttons['next'].hide();
     });
-    this.buttons['next'].position(WIDTH / 2, HEIGHT / 3);
 
     this.buttons['replay'] = createButton("REPLAY");
+    this.buttons['replay'].position(WIDTH / 2, 2 * HEIGHT / 3);
     this.buttons['replay'].mousePressed(() => {
       gm.gameState = "INTRO";
       gm.reset();
-      gm.buttons['replay'].hide();
     });
-    this.buttons['replay'].position(WIDTH / 2, 2 * HEIGHT / 3);
+  }
+
+  updateGameState(newState) {
+    Object.entries(this.buttons).forEach(([_, btn]) => {
+      btn.hide();
+    });
+    this.gameState = newState;
+    switch (this.gameState) {
+      case "LOGIN":
+        this.buttons['login'].show();
+        break;
+      case "INIT":
+        this.buttons['usernameForm'].show()
+        break;
+      case "HOME":
+        this.buttons['levels'].show();
+        break;
+      case "INTRO":
+        this.reset();
+        this.setLevel();
+        break;
+      case "GAME":
+        this.timer = 0;
+        this.frameCount = 0;
+        break;
+      case "OUTRO":
+        this.timer = 0;
+        this.frameCount = 0;
+        break;
+      default:
+        break;
+    }
   }
 
   spawnOre() {
@@ -243,57 +346,81 @@ function setup() {
   let canvas = createCanvas(800, 800);
   canvas.parent(canvasContainer);
   gm.initButtons()
-  Object.entries(gm.buttons).forEach(([_, btn])=>{
+  Object.entries(gm.buttons).forEach(([_, btn]) => {
     btn.parent(canvasContainer);
     btn.class("gameButton");
-    btn.hide();
   });
+  gm.updateGameState("LOGIN");
 
   frameRate(60);
+}
+
+function drawLogin() {
+  background(220);
+}
+
+function drawInit() {
+  background(220);
+}
+
+function drawHome() {
+  background(220);
 }
 
 function drawWelcome() {
   background(220);
   text("You are a pilot controlling a spaceship", 50, 50);
-  gm.buttons['start'].show();
 }
 
 function drawIntro() {
-  gm.buttons['start'].hide();
   background(220);
 
   gm.entities.player.show();
   gm.entities.obstacles.forEach(obs => obs.show());
   gm.entities.ores.forEach(ore => ore.show());
-  if (gm.timer >= 3) {
-    gm.setLevel();
-    gm.gameState = "PLAY";
+  stroke('black');
+  fill('white');
+  rect(300, 350, 200, 100);
+  textSize(36);
+  stroke('red');
+  text(4 - gm.timer, 350, 400);
+  textSize(12);
+
+  if (gm.timer > 3) {
+    gm.updateGameState("GAME");
   }
 
-  text(4 - gm.timer, WIDTH / 2, HEIGHT / 2);
 
 }
 
-function drawOutroWin() {
-  gm.buttons['start'].hide();
+function drawOutro() {
   background(220);
-  text("Congratz. You are qualified to go to next level.", 50, 50);
-  gm.buttons['next'].show();
-  gm.buttons['replay'].show();
+
+  gm.entities.player.show();
+  gm.entities.obstacles.forEach(obs => obs.show());
+  gm.entities.ores.forEach(ore => ore.show());
+  stroke('black');
+  fill('white');
+  rect(300, 350, 200, 100);
+  stroke('red');
+  fill('red');
+  textSize(12);
+  if (gm.entities.player.health <= 0) {
+    text('You lost all ores, better luck next time', 350, 400);
+  } else {
+    text(`You collected ${gm.oreCounter} ores, you will be compensated accordingly`, 350, 400);
+  }
+  text(6 - gm.timer, 350, 430);
+
+  if (gm.timer > 5) {
+    gm.updateGameState("HOME");
+  }
+
+
 }
 
-function drawOutroLose() {
-  gm.buttons['start'].hide();
-  background(220);
-  text("Too slow. You need to pass for next level.", 50, 50);
-  gm.buttons['replay'].show();
-}
+function drawGame() {
 
-
-function drawGamePlay() {
-  gm.buttons['start'].hide();
-  gm.buttons['next'].hide();
-  gm.buttons['replay'].hide();
   background(220);
   gm.entities.player.moveTowardsMouse();
 
@@ -305,13 +432,13 @@ function drawGamePlay() {
       obs.color = 'red';
       let speed = Math.sqrt(gm.entities.player.velocityX * gm.entities.player.velocityX + gm.entities.player.velocityY * gm.entities.player.velocityY);
       gm.entities.player.health -= Math.min(1 + speed * 1.2, 50);
-      if (gm.entities.player.health <= 0) { gm.gameState = "OUTROLOSE" };
       gm.entities.player.velocityX *= -1.1;
       gm.entities.player.velocityY *= -1.1;
     } else {
       obs.color = 'black';
     }
   })
+
 
   if (gm.entities.ores.length == 0) {
     gm.spawnOre();
@@ -345,14 +472,12 @@ function drawGamePlay() {
   text(gm.oreCounter, 10, 25);
   text(gm.timer, 10, 40);
 
-  if ((gm.oreCounter >= 10) && (gm.timer <= 30)) {
-    // if (gm.level === 4) {
-    // gm.gameState = "FINISH";
-    // } else {
-    gm.gameState = "OUTROWIN";
-    // }
-  } else if (gm.timer > 30) {
-    gm.gameState = "OUTROLOSE";
+  if (gm.entities.player.health <= 0) {
+    gm.updateGameState("OUTRO")
+  };
+
+  if (gm.timer > 30) {
+    gm.updateGameState("OUTRO");
   }
 
 }
@@ -360,23 +485,24 @@ function drawGamePlay() {
 function draw() {
   switch (gm.gameState) {
     // Start Screen
+
+    case "LOGIN":
+      drawLogin();
+      break;
     case "INIT":
       drawWelcome();
+      break;
+    case "HOME":
+      drawHome();
       break;
     case "INTRO":
       drawIntro();
       break;
-    case "OUTROWIN":
-      drawOutroWin();
+    case "GAME":
+      drawGame();
       break;
-    case "OUTROLOSE":
-      drawOutroLose();
-      break;
-    case "PLAY":
-      drawGamePlay();
-      break;
-    case "FINISH":
-      drawFinish();
+    case "OUTRO":
+      drawOutro();
       break;
     default:
       break;
