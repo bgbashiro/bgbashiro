@@ -36,13 +36,11 @@ class GameManager {
     // Buttons for handling login / setting username
 
     this.buttons['login'] = createButton("Login with Google");
-    this.buttons['login'].position(400, 400);
     this.buttons['login'].mousePressed(() => {
       googleSignIn(() => { this.updateGameState('INIT') });
     });
 
     this.buttons['usernameForm'] = createDiv();
-    this.buttons['usernameForm'].position(400, 400);
     let messageBox = createElement("p");
     this.buttons['usernameForm'].child(messageBox);
     let unameInput = createInput()
@@ -62,7 +60,6 @@ class GameManager {
 
     //
     this.buttons['levels'] = createDiv();
-    this.buttons['levels'].position(200, 200);
 
     let div0 = createDiv();
     let btn = createButton(`Tutorial`);
@@ -106,29 +103,6 @@ class GameManager {
     }
     this.buttons['levels'].child(div3);
 
-    // ---- //
-    this.buttons['start'] = createButton("START");
-    this.buttons['start'].center();
-    this.buttons['start'].mousePressed(() => {
-      gm.gameState = "INTRO";
-      gm.reset();
-    });
-
-    this.buttons['next'] = createButton("NEXT");
-    this.buttons['next'].position(WIDTH / 2, HEIGHT / 3);
-    this.buttons['next'].mousePressed(() => {
-      gm.gameState = "INTRO";
-      gm.reset();
-      gm.level++;
-      gm.level = Math.min(gm.level, 4);
-    });
-
-    this.buttons['replay'] = createButton("REPLAY");
-    this.buttons['replay'].position(WIDTH / 2, 2 * HEIGHT / 3);
-    this.buttons['replay'].mousePressed(() => {
-      gm.gameState = "INTRO";
-      gm.reset();
-    });
   }
 
   updateGameState(newState) {
@@ -155,6 +129,7 @@ class GameManager {
       case "INTRO":
         this.reset();
         this.setLevel();
+        updateLeaderBoard(gm.level);
         break;
       case "GAME":
         this.timer = 0;
@@ -352,12 +327,12 @@ var gm = new GameManager();
 
 function setup() {
   let canvasContainer = document.getElementById("canvasContainer");
-  console.log(canvasContainer);
   let canvas = createCanvas(800, 800);
   canvas.parent(canvasContainer);
   gm.initButtons()
   Object.entries(gm.buttons).forEach(([_, btn]) => {
     btn.parent(canvasContainer);
+    btn.center();
     btn.class("gameButton");
   });
   gm.updateGameState("LOGIN");

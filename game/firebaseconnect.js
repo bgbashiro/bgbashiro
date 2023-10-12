@@ -44,11 +44,11 @@ function addGameScore(level, score) {
     let leaderboardDocRef = doc(db, 'leaderboard', window.uuid)
     getDoc(leaderboardDocRef)
         .then(doc => doc.data())
-        .then(data => { 
-            if (data===undefined) {
+        .then(data => {
+            if (data === undefined) {
                 data = {}
-            } 
-            if (data[level]===undefined) {
+            }
+            if (data[level] === undefined) {
                 data[level] = [];
             }
             data[level].push(score);
@@ -57,7 +57,29 @@ function addGameScore(level, score) {
         .then(data => setDoc(leaderboardDocRef, data))
 }
 
+function fetchLeaderBoard(level) {
+    let leaderboardCollectionRef = collection(db, 'leaderboard');
+    return getDocs(leaderboardCollectionRef)
+        .then(rows => {
+            let uuidScores = {};
+            rows.forEach(row => {
+                let levelScores = row.data()[level];
+                if (levelScores !== undefined) {
+                    uuidScores[row.id] = Math.max(...levelScores);
+                }
+            });
+            return uuidScores;
+        })
+}
+
+function getUsername(uuid) {
+    let userDocRef = doc(db, 'users', uuid)
+    return getDoc(userDocRef).then(row => row.data()['displayName'])
+}
+
 window.getCurrentUser = getCurrentUser;
 window.googleSignIn = googleSignIn;
 window.setUsernameForCurrentUser = setUsernameForCurrentUser;
 window.addGameScore = addGameScore;
+window.fetchLeaderBoard = fetchLeaderBoard;
+window.getUsername = getUsername;
