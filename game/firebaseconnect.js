@@ -96,4 +96,3 @@ window.setUsernameForCurrentUser = setUsernameForCurrentUser;
 window.addGameScore = addGameScore;
 window.fetchLeaderBoard = fetchLeaderBoard;
 window.getUsername = getUsername;
-window.isSignedIn = isSignedIn;
