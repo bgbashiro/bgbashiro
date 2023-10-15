@@ -31,7 +31,7 @@ class GameManager {
     this.frameCount = 0;
   }
 
-  initButtons() {
+  initButtons(parentContainer) {
 
     // Buttons for handling login / setting username
 
@@ -39,17 +39,22 @@ class GameManager {
     this.buttons['login'].mousePressed(() => {
       googleSignIn(() => { this.updateGameState('INIT') });
     });
+    this.buttons['login'].class("btn-neon btn-center")
+    this.buttons['login'].parent(parentContainer);
 
     this.buttons['usernameForm'] = createDiv();
     let messageBox = createElement("p");
+    messageBox.elt.innerText = "Enter your username";
     this.buttons['usernameForm'].child(messageBox);
     let unameInput = createInput()
     this.buttons['usernameForm'].child(unameInput);
-    let submitBtn = createButton("Enter");
+    let submitBtn = createInput("Enter", "submit");
     submitBtn.mousePressed(() => {
       if (unameInput.elt.value === "") {
-        messageBox.elt.innerText = "You need to enter username..."
-        setTimeout(() => { messageBox.elt.innerText = "" }, 2000)
+        messageBox.elt.innerText = "Username cannot be blank..."
+        setTimeout(() => {
+          messageBox.elt.innerText = "Enter your username";
+        }, 2000)
       } else {
         setUsernameForCurrentUser(unameInput.elt.value, () => {
           this.updateGameState("HOME");
@@ -57,48 +62,61 @@ class GameManager {
       }
     })
     this.buttons['usernameForm'].child(submitBtn);
+    this.buttons['usernameForm'].class("btn-neon btn-center")
+    this.buttons['usernameForm'].parent(parentContainer);
 
     //
     this.buttons['levels'] = createDiv();
+    this.buttons['levels'].parent(parentContainer);
+    this.buttons['levels'].class("levels-container-root")
 
     let div0 = createDiv();
+    div0.class("levels-container")
     let btn = createButton(`Tutorial`);
     btn.mousePressed(() => {
       this.level = 1;
       this.updateGameState("INTRO");
     })
+    btn.class("btn-neon btn-level")
+
     div0.child(btn);
     this.buttons['levels'].child(div0);
 
     let div1 = createDiv();
+    div1.class("levels-container")
     for (let i = 2; i <= 4; i++) {
       let btn = createButton(`LEVEL ${i}`);
       btn.mousePressed(() => {
         this.level = i;
         this.updateGameState("INTRO");
       })
+      btn.class("btn-neon btn-level")
       div1.child(btn)
     }
     this.buttons['levels'].child(div1);
 
     let div2 = createDiv();
+    div2.class("levels-container")
     for (let i = 5; i <= 7; i++) {
       let btn = createButton(`LEVEL ${i}`);
       btn.mousePressed(() => {
         this.level = i;
         this.updateGameState("INTRO");
       })
+      btn.class("btn-neon btn-level")
       div2.child(btn)
     }
 
     this.buttons['levels'].child(div2);
     let div3 = createDiv();
+    div3.class("levels-container")
     for (let i = 8; i <= 8; i++) {
       let btn = createButton(`LEVEL ${i}`);
       btn.mousePressed(() => {
         this.level = i;
         this.updateGameState("INTRO");
       })
+      btn.class("btn-neon btn-level")
       div3.child(btn)
     }
     this.buttons['levels'].child(div3);
@@ -124,7 +142,7 @@ class GameManager {
         });
         break;
       case "HOME":
-        this.buttons['levels'].show();
+        this.buttons['levels'].style('display', 'flex')
         break;
       case "INTRO":
         this.reset();
@@ -320,45 +338,37 @@ class GameManager {
 
 };
 
-
-
-
 var gm = new GameManager();
 
 function setup() {
   let canvasContainer = document.getElementById("canvasContainer");
   let canvas = createCanvas(800, 800);
   canvas.parent(canvasContainer);
-  gm.initButtons()
-  Object.entries(gm.buttons).forEach(([_, btn]) => {
-    btn.parent(canvasContainer);
-    btn.center();
-    btn.class("gameButton");
-  });
+  gm.initButtons(canvasContainer)
   gm.updateGameState("LOGIN");
 
   frameRate(60);
 }
 
 function drawLogin() {
-  background(220);
+  background(0);
 }
 
 function drawInit() {
-  background(220);
+  background(0);
 }
 
 function drawHome() {
-  background(220);
+  background(0);
 }
 
 function drawWelcome() {
-  background(220);
+  background(0);
   text("You are a pilot controlling a spaceship", 50, 50);
 }
 
 function drawIntro() {
-  background(220);
+  background(0);
 
   gm.entities.player.show();
   gm.entities.obstacles.forEach(obs => obs.show());
@@ -379,7 +389,7 @@ function drawIntro() {
 }
 
 function drawOutro() {
-  background(220);
+  background(0);
 
   gm.entities.player.show();
   gm.entities.obstacles.forEach(obs => obs.show());
@@ -406,7 +416,7 @@ function drawOutro() {
 
 function drawGame() {
 
-  background(220);
+  background(0);
   gm.entities.player.moveTowardsMouse();
 
   gm.entities.obstacles.forEach(obs => {
@@ -420,7 +430,7 @@ function drawGame() {
       gm.entities.player.velocityX *= -1.1;
       gm.entities.player.velocityY *= -1.1;
     } else {
-      obs.color = 'black';
+      obs.color = 'white';
     }
   })
 

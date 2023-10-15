@@ -16,10 +16,101 @@
 #canvasContainer {
     width: 800px;
     margin: auto;
+    position: relative;
 }
 
-.gameButton {
-    width: 100px;
-    height: 20px;
+.btn-neon {
+    border: transparent;
+    background-color: black;
+    box-shadow: none;
+    color: #565656;
+    text-shadow: 0 0 0px transparent;
+    font-size: 1.6rem;
+    transition: 2.5s;
+    -webkit-transition: 2.5s;
+    padding: 15px 30px;
+    line-height: 40px;
+    margin: 0;
+    border-radius: 25px;
+    cursor: pointer;
+
+}
+
+.btn-neon:hover {
+    /* border: 2px solid #1c2166; */
+    transition: 0.8s;
+    -webkit-transition: 0.8s;
+    color: #15bfd6;
+    text-shadow: 0 0 25px #23cccc;
+    box-shadow: inset 0 0 35px #23cccc, 0 0 15px #23cccc;
+}
+
+.btn-neon>input {
+    border: solid #45595c3b 1px;
+    border-radius: 10px;
+    background-color: transparent;
+    font-size: 2.6rem;
+    color: #127e81;
+    flex-grow: 1;
+    margin-top: 0;
+    margin-bottom: 0;
+    max-width: 70%;
+}
+
+.btn-neon>input:hover {
+    background-color: #1652635e;
+    box-shadow: inset  0 0 25px #106868, 0 0 25px #000000;
+    transition: .8s;
+}
+
+.btn-neon > p {
+    font-size: 21px;
+    margin: 0;
+    margin-bottom: 2px;
+    text-align: center;
+}
+.btn-center {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+
+    position: absolute;
+    width: 400px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -200px;
+}
+
+.levels-container-root {
+    border: solid red;
+    width: 60%;
     margin: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    top: 10%;
+    left: 20%;
+}
+
+.levels-container {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.btn-level {
+    font-size: 1rem;
+    flex-grow: 1;
+    margin: 10px
+}
+
+.leaderboard-entry {
+    list-style:none;
+    padding: 0;
+    margin: 0;
 }

@@ -38,7 +38,9 @@ class Player {
   }
 
   show() {
+    fill(0,100,0);
     ellipse(this.positionX, this.positionY, 2 * this.radius, 2 * this.radius);
+    fill(0);
   }
 }
 
@@ -64,7 +66,7 @@ class Rod {
     this.startY = startY;
     this.endX = endX;
     this.endY = endY;
-    this.color = 'black';
+    this.color = 'white';
   }
 
   show() {
