@@ -121,6 +121,13 @@ class GameManager {
     }
     this.buttons['levels'].child(div3);
 
+    this.buttons['signout'] = createButton(`Sign out`);
+    this.buttons['signout'].mousePressed(() => {
+      googleSignOut(this.updateGameState("LOGIN"));
+    })
+    this.buttons['signout'].class("btn-neon btn-bottom btn-neon-scarlet");
+    this.buttons['signout'].parent(parentContainer);
+
   }
 
   updateGameState(newState) {
@@ -143,6 +150,7 @@ class GameManager {
         break;
       case "HOME":
         this.buttons['levels'].style('display', 'flex')
+        this.buttons['signout'].show()
         break;
       case "INTRO":
         this.reset();

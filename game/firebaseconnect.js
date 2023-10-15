@@ -20,11 +20,15 @@ let provider = new GoogleAuthProvider();
 
 function googleSignIn(callbackFn) {
     signInWithPopup(auth, provider)
-        .then((res) => {
-            let user = res.user;
-            window.uuid = user.uid;
-        })
+        // .then((res) => {
+            // let user = res.user;
+            // window.uuid = user.uid;
+        // })
         .then(callbackFn)
+}
+
+function googleSignOut(callbackFn) {
+    signOut(auth).then(callbackFn);
 }
 
 function getCurrentUser(callbackFn) {
@@ -77,9 +81,19 @@ function getUsername(uuid) {
     return getDoc(userDocRef).then(row => row.data()['displayName'])
 }
 
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    window.uuid = user.uid;
+  } else {
+    window.uuid = null;
+  }
+});
+
 window.getCurrentUser = getCurrentUser;
 window.googleSignIn = googleSignIn;
+window.googleSignOut = googleSignOut;
 window.setUsernameForCurrentUser = setUsernameForCurrentUser;
 window.addGameScore = addGameScore;
 window.fetchLeaderBoard = fetchLeaderBoard;
 window.getUsername = getUsername;
+window.isSignedIn = isSignedIn;
