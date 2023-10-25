@@ -1,0 +1,60 @@
+@import url(https://fonts.googleapis.com/css?family=Lobster);
+
+#welcome {
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+#navigation {
+    width: 50%;
+    margin: auto;
+    margin-top: 20%;
+}
+
+#navigation > ul {
+    list-style-type: none;
+    width: 50%;
+    min-width: 200px;
+    margin: auto;
+    padding: 0 auto;
+}
+
+.navigation-subsection {
+    text-align: center;
+    font-size: 30px;
+    background: rgba(73, 72, 72, 0.527);
+    padding: 2px;
+    border-radius: 5px;
+}
+
+.navigation-subsection > em {
+    font-weight: 800;
+    font-style: normal;
+}
+
+#navigation a {
+    display: block;
+    padding: 1px;
+    margin: 1px;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid black;
+    border-radius: 2px;
+    width: 98%;
+    height: 50px;
+    background: rgba(47, 69, 90, 0.5);
+    font-family: 'Lobster', cursive, serif;
+    font-size: 30px;
+    text-shadow: 2px 2px 2px #1c1c1c;
+    color: #e6e6e6;
+}
+
+#navigation a:visited {
+    color: #333;
+}
+
+#navigation a:hover {
+    background: #4d4d4d;
+}
