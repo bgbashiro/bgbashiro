@@ -429,7 +429,7 @@ function drawGame() {
     )) {
       obs.color = 'red';
       let speed = Math.sqrt(gm.entities.player.velocityX * gm.entities.player.velocityX + gm.entities.player.velocityY * gm.entities.player.velocityY);
-      gm.entities.player.health -= Math.min(1 + speed * 1.2, 50);
+      gm.entities.player.health -= Math.min(1 + speed * 2.5, 50);
       gm.entities.player.velocityX *= -1.1;
       gm.entities.player.velocityY *= -1.1;
     } else {
