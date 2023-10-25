@@ -70,7 +70,7 @@ class Ore {
     this.positionX = positionX;
     this.positionY = positionY;
     this.radius = 10;
-    this.image = loadImage("assets/amethyst4.png");
+    this.image = loadImage("assets/amethyst.png");
   }
 
   show() {
