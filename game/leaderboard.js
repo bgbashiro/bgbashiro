@@ -7,7 +7,7 @@ function updateLeaderBoard(level) {
             getUsername(uuid).then(row => {
                 let li = document.createElement("li")
                 li.innerText = `${row} : ${score}`
-                li.classList.add('leaderbord-entry');
+                li.classList.add('leaderboard-entry');
                 leaderboardOL.appendChild(li);
             })
         })

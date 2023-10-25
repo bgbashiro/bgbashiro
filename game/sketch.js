@@ -359,24 +359,21 @@ function setup() {
 }
 
 function drawLogin() {
-  background(0);
 }
 
 function drawInit() {
-  background(0);
 }
 
 function drawHome() {
-  background(0);
 }
 
 function drawWelcome() {
-  background(0);
+
   text("You are a pilot controlling a spaceship", 50, 50);
 }
 
 function drawIntro() {
-  background(0);
+  background(0, 0.2);
 
   gm.entities.player.show();
   gm.entities.obstacles.forEach(obs => obs.show());
@@ -397,7 +394,6 @@ function drawIntro() {
 }
 
 function drawOutro() {
-  background(0);
 
   gm.entities.player.show();
   gm.entities.obstacles.forEach(obs => obs.show());
@@ -424,7 +420,6 @@ function drawOutro() {
 
 function drawGame() {
 
-  background(0);
   gm.entities.player.moveTowardsMouse();
 
   gm.entities.obstacles.forEach(obs => {
@@ -472,6 +467,7 @@ function drawGame() {
   rect(WIDTH * 0.85, 25, Math.max(0, gm.entities.player.fuel), 25);
   fill('black');
 
+  fill('white');
   text(gm.oreCounter, 10, 25);
   text(gm.timer, 10, 40);
 
@@ -486,6 +482,8 @@ function drawGame() {
 }
 
 function draw() {
+  clear();
+  background(0, 0.5);
   switch (gm.gameState) {
     // Start Screen
 
