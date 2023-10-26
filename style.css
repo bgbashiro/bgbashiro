@@ -1,35 +1,58 @@
 @import url(https://fonts.googleapis.com/css?family=Lobster);
 
-#welcome {
+* {
+    /* border: solid red 2px; */
+    margin: 0;
+    padding: 0;
+}
+
+.body-wrapper {
     width: 50%;
+    min-width: 200px;
+    height: 100vh;
+    min-height: 500px;
+
     margin: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 5%;
+    padding-top: 0;
+    padding-bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.banner-stripe {
+    height: 50px;
+    width: 100%;
+    background-color: rgba(62, 67, 107, 0.308);
+}
+
+#welcome {
     text-align: center;
-    font-size: 1.5em;
+    font-size: 30px;
 }
 
 #navigation {
-    width: 50%;
-    margin: auto;
-    margin-top: 20%;
+    width: 100%;
+    margin-top: auto;
 }
 
-#navigation > ul {
+#navigation>ul {
     list-style-type: none;
-    width: 50%;
-    min-width: 200px;
     margin: auto;
-    padding: 0 auto;
+    padding: auto;
 }
 
 .navigation-subsection {
     text-align: center;
     font-size: 30px;
-    background: rgba(73, 72, 72, 0.527);
-    padding: 2px;
-    border-radius: 5px;
+    background: rgba(99, 97, 97, 0.13);
 }
 
-.navigation-subsection > em {
+.navigation-subsection>em {
     font-weight: 800;
     font-style: normal;
 }
@@ -38,12 +61,13 @@
     display: block;
     padding: 1px;
     margin: 1px;
+    height: 50px;
+
     text-align: center;
     text-decoration: none;
-    border: 1px solid black;
+
     border-radius: 2px;
-    width: 98%;
-    height: 50px;
+
     background: rgba(47, 69, 90, 0.5);
     font-family: 'Lobster', cursive, serif;
     font-size: 30px;
@@ -52,9 +76,10 @@
 }
 
 #navigation a:visited {
-    color: #333;
+    color: #afa3a3a9;
 }
 
 #navigation a:hover {
-    background: #4d4d4d;
+    background: rgba(99, 97, 97, 0.13);
+    /* background: #929292; */
 }
