@@ -146,6 +146,11 @@ class GameManager {
     Object.entries(this.buttons).forEach(([_, btn]) => {
       btn.hide();
     });
+
+    updateHallOfFame();
+    if (gm.level !== undefined) {
+      updateLeaderBoard(gm.level);
+    }
     this.gameState = newState;
     switch (this.gameState) {
       case "LOGIN":
@@ -173,7 +178,8 @@ class GameManager {
         this.currentMusic.play();
 
         this.buttons['levels'].style('display', 'flex')
-        this.buttons['signout'].show()
+        this.buttons['signout'].show();
+
         break;
       case "INTRO":
 
@@ -184,7 +190,6 @@ class GameManager {
 
         this.reset();
         this.setLevel();
-        updateLeaderBoard(gm.level);
         break;
       case "GAME":
 

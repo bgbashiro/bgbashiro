@@ -21,8 +21,8 @@ let provider = new GoogleAuthProvider();
 function googleSignIn(callbackFn) {
     signInWithPopup(auth, provider)
         // .then((res) => {
-            // let user = res.user;
-            // window.uuid = user.uid;
+        // let user = res.user;
+        // window.uuid = user.uid;
         // })
         .then(callbackFn)
 }
@@ -76,17 +76,41 @@ function fetchLeaderBoard(level) {
         })
 }
 
+function addHOFMessage(message) {
+    let hofCollectionRef = collection(db, 'halloffame');
+    addDoc(hofCollectionRef, {
+        uuid: window.uuid,
+        message: message
+    });
+}
+
+function fetchHOF() {
+    let hofDocRef = collection(db, 'halloffame');
+    return getDocs(hofDocRef)
+        .then(rows => {
+            let rowsData = [];
+            rows.forEach(row => {
+                rowsData.push({
+                    uuid: row.data().uuid,
+                    message: row.data().message
+                })
+            })
+
+            return rowsData;
+        })
+}
+
 function getUsername(uuid) {
     let userDocRef = doc(db, 'users', uuid)
     return getDoc(userDocRef).then(row => row.data()['displayName'])
 }
 
 onAuthStateChanged(auth, (user) => {
-  if (user) {
-    window.uuid = user.uid;
-  } else {
-    window.uuid = null;
-  }
+    if (user) {
+        window.uuid = user.uid;
+    } else {
+        window.uuid = null;
+    }
 });
 
 window.getCurrentUser = getCurrentUser;
@@ -96,3 +120,5 @@ window.setUsernameForCurrentUser = setUsernameForCurrentUser;
 window.addGameScore = addGameScore;
 window.fetchLeaderBoard = fetchLeaderBoard;
 window.getUsername = getUsername;
+window.addHOFMessage = addHOFMessage;
+window.fetchHOF = fetchHOF;
