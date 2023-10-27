@@ -427,10 +427,10 @@ function drawIntro() {
   rect(300, 350, 200, 100);
   textSize(36);
   stroke('red');
-  text(4 - gm.timer, 350, 400);
+  text(6 - gm.timer, 350, 400);
   textSize(12);
 
-  if (gm.timer > 10) {
+  if (gm.timer > 5) {
     gm.updateGameState("GAME");
   }
 
