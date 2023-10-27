@@ -394,6 +394,7 @@ class GameManager {
 };
 
 var gm = new GameManager();
+var amethystImage;
 
 function setup() {
   let canvasContainer = document.getElementById("canvasContainer");
@@ -402,6 +403,8 @@ function setup() {
   gm.initButtons(canvasContainer);
   gm.initMusic();
   gm.updateGameState("LOGIN");
+
+  amethystImage = loadImage("assets/amethyst.png");
 
 
   frameRate(60);
@@ -517,8 +520,10 @@ function drawGame() {
   fill('black');
 
   fill('white');
-  text(gm.oreCounter, 10, 25);
-  text(gm.timer, 10, 40);
+  imageMode(CORNER);
+  image(amethystImage, 10, 10, 15, 15)
+  text(gm.oreCounter, 30, 25);
+  text(`⏲️ ${60-gm.timer}`, 10, 40);
 
   if (gm.entities.player.health <= 0) {
     gm.updateGameState("OUTRO")
