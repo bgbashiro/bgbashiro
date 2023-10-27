@@ -26,7 +26,7 @@ class Player {
 
     let force = 0.1;
     if (keyIsDown(32) && (this.fuel > 0)) {
-      force = 1.8;
+      force = 1.4;
       this.fuel -= 1.5;
     }
 
