@@ -167,6 +167,7 @@ class GameManager {
         break;
       case "HOME":
 
+        this.currentMusic.stop();
         this.currentMusic = this.bgMusic.part1;
         this.currentMusic.setLoop(true);
         this.currentMusic.play();
