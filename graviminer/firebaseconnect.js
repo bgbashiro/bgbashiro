@@ -40,7 +40,22 @@ function getCurrentUser(callbackFn) {
 
 function setUsernameForCurrentUser(username, callbackFn) {
     let userDocRef = doc(db, 'users', window.uuid);
-    setDoc(userDocRef, { 'displayName': username })
+    getDoc(userDocRef)
+        .then(doc => {
+            if ((doc === undefined) || (doc === null)) {
+                return {};
+            }
+            else {
+                return doc.data();
+            }
+        })
+        .then(doc => {
+            doc['displayName'] = username;
+            return doc;
+        })
+        .then(doc => {
+            setDoc(userDocRef, doc);
+        })
         .then(callbackFn)
 }
 
