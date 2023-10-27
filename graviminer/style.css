@@ -44,7 +44,7 @@ body {
     margin: auto;
     margin-top: 20px;
     width: 90%;
-    height: 80%;
+    height: 77%;
     overflow: scroll;
 }
 
@@ -100,6 +100,7 @@ form.halloffame-entry {
     margin: auto;
     top: 2%;
     width: 90%;
+    text-align: right;
 }
 
 form.halloffame-entry > input {

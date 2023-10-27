@@ -59,6 +59,22 @@ function addGameScore(level, score) {
             return data;
         })
         .then(data => setDoc(leaderboardDocRef, data))
+
+    let userDocRef = doc(db, 'users', window.uuid)
+    getDoc(userDocRef)
+        .then(doc => doc.data())
+        .then(doc => {
+            let currentGraviCoins = (doc['graviCoins'] === undefined) ? 0 : doc['graviCoins'];
+            let multiplier = 1;
+            if ((level >= 5) && (level <= 7)) {
+                multiplier = 2;
+            } else if ((level >= 8)) {
+                multiplier = 3
+            }
+            doc['graviCoins'] = currentGraviCoins + multiplier * score;
+            return doc;
+        })
+        .then(data => setDoc(userDocRef, data))
 }
 
 function fetchLeaderBoard(level) {
@@ -76,12 +92,32 @@ function fetchLeaderBoard(level) {
         })
 }
 
-function addHOFMessage(message) {
-    let hofCollectionRef = collection(db, 'halloffame');
-    addDoc(hofCollectionRef, {
-        uuid: window.uuid,
-        message: message
-    });
+function addHOFMessage(message, callbackFnSuccess, callbackFnFail) {
+    let userDocRef = doc(db, 'users', window.uuid)
+    getDoc(userDocRef)
+        .then(doc => doc.data())
+        .then(doc => {
+            let currentGraviCoins = (doc['graviCoins'] === undefined) ? 0 : doc['graviCoins'];
+            if (currentGraviCoins > 100) {
+                doc['graviCoins'] = currentGraviCoins - 100;
+            } else {
+                doc = "not enough coins";
+            }
+            return doc;
+        })
+        .then(data => {
+            if (data === "not enough coins") {
+                callbackFnFail();
+            } else {
+                setDoc(userDocRef, data)
+                let hofCollectionRef = collection(db, 'halloffame');
+                addDoc(hofCollectionRef, {
+                    uuid: window.uuid,
+                    message: message
+                }).then(() => callbackFnSuccess());
+            }
+        })
+
 }
 
 function fetchHOF() {

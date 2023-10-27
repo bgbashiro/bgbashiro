@@ -41,14 +41,29 @@ function updateHallOfFame() {
             })
         })
     })
+    let gravicoinBalanceText = document.querySelector("#gravicoinBalance")
+    getCurrentUser((userData) => {
+        if ((userData !== undefined) && (userData['graviCoins'] !== undefined)) {
+            let gravicoinBalance = userData['graviCoins'];
+            gravicoinBalanceText.innerText = "Balance: " + gravicoinBalance + "🪙";
+        }
+    })
 }
 
 document.querySelector("form.halloffame-entry > input[type='submit']").onclick = (e) => {
     e.preventDefault();
     let messageTxt = document.querySelector("form.halloffame-entry > input[type='text']").value
     if (messageTxt.length > 0) {
-        addHOFMessage(messageTxt);
-        document.querySelector("form.halloffame-entry > input[type='text']").value = ""
-        updateHallOfFame();
-    } 
+        addHOFMessage(messageTxt, () => {
+            updateHallOfFame();
+            document.querySelector("form.halloffame-entry > input[type='text']").value = ""
+        }, () => {
+            let gravicoinBalanceText = document.querySelector("#gravicoinBalance");
+            let txt = gravicoinBalanceText.innerText;
+            gravicoinBalanceText.innerText = "Not enough Coins... " + txt;
+            setTimeout(() => {
+                gravicoinBalanceText.innerText = txt;
+            }, 2000)
+        });
+    }
 }
