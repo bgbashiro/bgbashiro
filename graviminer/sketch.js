@@ -543,7 +543,7 @@ function drawGame() {
     gm.updateGameState("OUTRO")
   };
 
-  if (gm.timer > 30) {
+  if (gm.timer > 60) {
     gm.updateGameState("OUTRO");
   }
 
