@@ -11,7 +11,62 @@ body {
 
 #halloffame {
     /* border: solid red 1px; */
+    width: 30%;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     flex-grow: 1;
+    box-shadow: inset 0 0 80px #9029e457, 0 0 5px #bf77fad0;
+    border-radius: 15px;
+}
+
+#halloffame>h1 {
+    width: 60%;
+    min-width: 300px;
+    padding: auto;
+    margin: auto;
+    margin-top: 20px;
+    height: 42px;
+
+    color: #6f00ff;
+    text-align: center;
+    vertical-align: text-bottom;
+    font-family: "VT323", Sofia;
+    font-size: 52px;
+    font-weight: 900;
+}
+
+#halloffame>ol {
+    display: block;
+    padding: 0;
+    margin: auto;
+    margin-top: 20px;
+    width: 90%;
+}
+
+.halloffame-entry {
+    list-style: none;
+    padding: 10px;
+    margin: 5px;
+    margin-top: 11px;
+    /* height: 32px; */
+    box-shadow: inset 0 0 40px #c529e41c, 0 0 2px #e429e457;
+    border-radius: 9px;
+
+    color: #e956d5d5;
+    text-align: center;
+    font-family: "VT323", Sofia;
+    font-size: 22px;
+
+}
+
+.halloffame-entry > p {
+    margin: 0;
+}
+
+.halloffame-entry-username {
+    color: #ae56e9d5;
 }
 
 #canvasContainer {
@@ -193,6 +248,7 @@ body {
 }
 
 #leaderboard {
+    width: 30%;
     margin-left: 50px;
     margin-right: 50px;
     margin-top: 10px;
@@ -214,7 +270,8 @@ body {
 }
 
 #leaderboard>h1 {
-    width: 40%;
+    width: 60%;
+    min-width: 300px;
     padding: auto;
     margin: auto;
     margin-top: 20px;
@@ -233,7 +290,7 @@ body {
 }
 
 .leaderboard-entry {
-    list-style: none;
+    list-style-type: style;
     padding: 10px;
     margin: 5px;
     margin-top: 11px;
