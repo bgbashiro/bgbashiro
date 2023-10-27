@@ -15,16 +15,16 @@ I am just adding random "content" here. Most stuff I do for fun.
         - [ ] support for polygons
     - [x] Spaceship control
 - [ ] Gameplay
-    - [ ] Game state manager
+    - [x] Game state manager
         - INIT, INTRO, PLAY, OUTRO, FINISH
     - [x] Timer
     - [x] Counter
-    - [ ] 10 Levels
+    - [x] 8 Levels
 - [ ] Visuals/Artwork
-    - [ ] Spaceship
+    - [x] Spaceship
     - [ ] Obstacles
 
 - [ ] Enhancements
     - [ ] Level Editor
-    - [ ] Online leaderboard
+    - [x] Online leaderboard
     - [ ] Dialogue system
