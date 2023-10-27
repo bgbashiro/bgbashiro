@@ -214,7 +214,6 @@ class GameManager {
         this.timer = 0;
         this.frameCount = 0;
 
-        updateLeaderBoard(gm.level);
         break;
       default:
         break;

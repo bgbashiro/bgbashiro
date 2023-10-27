@@ -8,6 +8,9 @@ function updateLeaderBoard(level) {
                 let li = document.createElement("li")
                 li.innerText = `${row} : ${score}`
                 li.classList.add('leaderboard-entry');
+                if (window.uuid == uuid) {
+                    li.classList.add('leaderboard-entry-own')
+                }
                 leaderboardOL.appendChild(li);
             })
         })
@@ -24,6 +27,9 @@ function updateHallOfFame() {
             getUsername(uuid).then(row => {
                 let li = document.createElement("li");
                 li.classList.add('halloffame-entry');
+                if (window.uuid == uuid) {
+                    li.classList.add('halloffame-entry-own')
+                }
                 let p = document.createElement("p");
                 p.innerText = message;
                 let span = document.createElement("span");
