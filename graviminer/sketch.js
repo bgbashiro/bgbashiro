@@ -31,6 +31,18 @@ class GameManager {
     this.frameCount = 0;
   }
 
+  initMusic() {
+
+    this.bgMusic = {
+      part1: loadSound("assets/organica-part1.mp3"),
+      part2: loadSound("assets/organica-part2.mp3"),
+      part3: loadSound("assets/organica-part3.mp3"),
+      part4: loadSound("assets/organica-part4.mp3"),
+    }
+    Object.entries(this.bgMusic).forEach(([_, v]) => v.playMode("untilDone"));
+    this.currentMusic = this.bgMusic.part1;
+  }
+
   initButtons(parentContainer) {
 
     // Buttons for handling login / setting username
@@ -140,9 +152,12 @@ class GameManager {
         this.buttons['login'].show();
         break;
       case "INIT":
+
+        this.currentMusic = this.bgMusic.part1;
+        this.currentMusic.setLoop(true);
+        this.currentMusic.play();
+
         this.buttons['usernameForm'].show();
-        bgMusic.setLoop(true);
-        bgMusic.play();
         let unameInput = this.buttons['usernameForm'].elt.querySelector('input');
         getCurrentUser((data) => {
           if (data !== undefined) {
@@ -151,24 +166,49 @@ class GameManager {
         });
         break;
       case "HOME":
+
+        this.currentMusic = this.bgMusic.part1;
+        this.currentMusic.setLoop(true);
+        this.currentMusic.play();
+
         this.buttons['levels'].style('display', 'flex')
         this.buttons['signout'].show()
         break;
       case "INTRO":
+
+        this.currentMusic.stop();
+        this.currentMusic = this.bgMusic.part3;
+        this.currentMusic.setLoop(false);
+        this.currentMusic.play();
+
         this.reset();
         this.setLevel();
         updateLeaderBoard(gm.level);
         break;
       case "GAME":
+
+        this.currentMusic.stop();
+        this.currentMusic = this.bgMusic.part2;
+        this.currentMusic.setLoop(true);
+        this.currentMusic.play();
+
         this.timer = 0;
         this.frameCount = 0;
         break;
       case "OUTRO":
+
+        this.currentMusic.stop();
+        this.currentMusic = this.bgMusic.part4;
+        this.currentMusic.setLoop(false);
+        this.currentMusic.play();
+
         if (gm.entities.player.health > 0) {
           addGameScore(gm.level, gm.oreCounter);
         }
         this.timer = 0;
         this.frameCount = 0;
+
+        updateLeaderBoard(gm.level);
         break;
       default:
         break;
@@ -349,17 +389,15 @@ class GameManager {
 };
 
 var gm = new GameManager();
-var bgMusic;
 
 function setup() {
   let canvasContainer = document.getElementById("canvasContainer");
   let canvas = createCanvas(800, 800);
   canvas.parent(canvasContainer);
-  gm.initButtons(canvasContainer)
+  gm.initButtons(canvasContainer);
+  gm.initMusic();
   gm.updateGameState("LOGIN");
 
-  bgMusic = loadSound("assets/organica.mp3");
-  bgMusic.playMode("untilDone");
 
   frameRate(60);
 }
@@ -392,7 +430,7 @@ function drawIntro() {
   text(4 - gm.timer, 350, 400);
   textSize(12);
 
-  if (gm.timer > 3) {
+  if (gm.timer > 10) {
     gm.updateGameState("GAME");
   }
 
