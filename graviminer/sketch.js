@@ -434,8 +434,6 @@ function drawHome() {
 }
 
 function drawWelcome() {
-
-  text("You are a pilot controlling a spaceship", 50, 50);
 }
 
 function drawIntro() {
