@@ -205,9 +205,9 @@ form.halloffame-entry > input {
     position: absolute;
     width: 400px;
     height: 100px;
-    bottom: 10%;
+    bottom: 0%;
     left: 50%;
-    margin-top: -50px;
+    margin-top: -60px;
     margin-left: -200px;
 }
 
@@ -220,7 +220,7 @@ form.halloffame-entry > input {
     flex-direction: column;
 
     position: absolute;
-    top: 10%;
+    top: 0%;
     left: 20%;
 }
 
@@ -384,4 +384,9 @@ form.halloffame-entry > input {
     animation-name: leaderboard-own-entry-blink;
     animation-duration: 1.5s;
     animation-iteration-count: 1;
+}
+
+.text-gameplay-info {
+    color: #e4e4e4;
+    font-family: monospace;
 }

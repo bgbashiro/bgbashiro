@@ -78,9 +78,23 @@ class GameManager {
     this.buttons['usernameForm'].parent(parentContainer);
 
     //
+    let info = createDiv();
+    let infoText = createElement('p');
+    infoText.elt.innerText = `
+    You are a pilot controlling a spaceship in deep space. Your goal is to collect as much "gravitanium" crystals as possible in 60 seconds. These are purpleish crystals scattered around. You will definitely recognize them when seeing, do not worry. These crystals are important to make space travel possible by helping us bend gravity rules. 
+    
+    The position of the mouse pointer is current center of gravity pulling the spaceship. You can increase the strength of gravity by pressing SPACEBAR. Do not worry if you do not understand it, just head to "tutorial" and move your pointer around and press SPACEBAR at times, you will get the feel for it.  
+
+    Depending on difficulty of mission you will get compensated in "gravicoins" (1 for each gravitanium crystal for Levels 2-4, 2 for levels 5-7 and 3 for level 8). You can spend these to add message to "Hall Of Fame" to your left. You can also check leaderboard to your right to see how other fellow pilots are doing.
+    `
+    info.parent(parentContainer);
+    info.child(infoText);
+    info.class("text-gameplay-info")
+
     this.buttons['levels'] = createDiv();
     this.buttons['levels'].parent(parentContainer);
     this.buttons['levels'].class("levels-container-root")
+    this.buttons['levels'].child(info);
 
     let div0 = createDiv();
     div0.class("levels-container")
@@ -177,7 +191,7 @@ class GameManager {
         this.currentMusic.setLoop(true);
         this.currentMusic.play();
 
-        this.buttons['levels'].style('display', 'flex')
+        this.buttons['levels'].style('display', 'flex');
         this.buttons['signout'].show();
 
         break;
