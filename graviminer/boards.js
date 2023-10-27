@@ -46,6 +46,8 @@ function updateHallOfFame() {
         if ((userData !== undefined) && (userData['graviCoins'] !== undefined)) {
             let gravicoinBalance = userData['graviCoins'];
             gravicoinBalanceText.innerText = "Balance: " + gravicoinBalance + "🪙";
+        } else {
+            gravicoinBalanceText.innerText = "Balance: " + 0 + "🪙";
         }
     })
 }
