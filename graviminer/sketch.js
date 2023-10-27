@@ -140,7 +140,9 @@ class GameManager {
         this.buttons['login'].show();
         break;
       case "INIT":
-        this.buttons['usernameForm'].show()
+        this.buttons['usernameForm'].show();
+        bgMusic.setLoop(true);
+        bgMusic.play();
         let unameInput = this.buttons['usernameForm'].elt.querySelector('input');
         getCurrentUser((data) => {
           if (data !== undefined) {
@@ -347,6 +349,7 @@ class GameManager {
 };
 
 var gm = new GameManager();
+var bgMusic;
 
 function setup() {
   let canvasContainer = document.getElementById("canvasContainer");
@@ -354,6 +357,9 @@ function setup() {
   canvas.parent(canvasContainer);
   gm.initButtons(canvasContainer)
   gm.updateGameState("LOGIN");
+
+  bgMusic = loadSound("assets/organica.mp3");
+  bgMusic.playMode("untilDone");
 
   frameRate(60);
 }
