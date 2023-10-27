@@ -85,7 +85,7 @@ class GameManager {
     
     The position of the mouse pointer is current center of gravity pulling the spaceship. You can increase the strength of gravity by pressing SPACEBAR. Do not worry if you do not understand it, just head to "tutorial" and move your pointer around and press SPACEBAR at times, you will get the feel for it.  
 
-    Depending on difficulty of mission you will get compensated in "gravicoins" (1 for each gravitanium crystal for Levels 2-4, 2 for levels 5-7 and 3 for level 8). You can spend these to add message to "Hall Of Fame" to your left. You can also check leaderboard to your right to see how other fellow pilots are doing.
+    Depending on difficulty of mission you will get compensated in "gravicoins" (1 for each gravitanium crystal for Levels 2-4, 2 for levels 5-7 and 3 for level 8, tutorial does not give any coins). You can spend these to add message to "Hall Of Fame" to your left. You can also check leaderboard to your right to see how other fellow pilots are doing.
     `
     info.parent(parentContainer);
     info.child(infoText);

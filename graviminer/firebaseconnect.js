@@ -70,6 +70,8 @@ function addGameScore(level, score) {
                 multiplier = 2;
             } else if ((level >= 8)) {
                 multiplier = 3
+            } else if (level === 1) {
+                multiplier = 0;
             }
             doc['graviCoins'] = currentGraviCoins + multiplier * score;
             return doc;
