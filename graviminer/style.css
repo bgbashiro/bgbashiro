@@ -19,7 +19,7 @@ body {
     flex-grow: 1;
     box-shadow: inset 0 0 80px #9029e457, 0 0 5px #bf77fad0;
     border-radius: 15px;
-    height: 98vh;
+    height: 95vh;
 }
 
 #halloffame>h1 {
@@ -98,7 +98,7 @@ form.halloffame-entry {
     box-shadow: inset 0 0 0 0, 0 0 0 0;
     position: relative;
     margin: auto;
-    top: 2%;
+    top: 0%;
     width: 90%;
     text-align: right;
 }
@@ -309,7 +309,7 @@ form.halloffame-entry > input {
     animation-duration: 8s;
     animation-iteration-count: infinite;
     animation-direction: normal;
-    height: 98vh;
+    height: 95vh;
 }
 
 #leaderboard>ol {
