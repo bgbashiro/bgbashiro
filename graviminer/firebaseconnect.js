@@ -42,11 +42,12 @@ function setUsernameForCurrentUser(username, callbackFn) {
     let userDocRef = doc(db, 'users', window.uuid);
     getDoc(userDocRef)
         .then(doc => {
+            doc = doc.data();
             if ((doc === undefined) || (doc === null)) {
                 return {};
             }
             else {
-                return doc.data();
+                return doc;
             }
         })
         .then(doc => {
