@@ -24,9 +24,9 @@ class Player {
 
     let r = sqrt(dx * dx + dy * dy);
 
-    let force = 0.1;
+    let force = 0.04;
     if (keyIsDown(32) && (this.fuel > 0)) {
-      force = 1.4;
+      force = .5;
       this.fuel -= 1.5;
     }
 
@@ -44,8 +44,8 @@ class Player {
     this.positionX += this.velocityX;
     this.positionY += this.velocityY;
 
-    this.velocityX *= 0.93;
-    this.velocityY *= 0.93;
+    this.velocityX *= 0.98;
+    this.velocityY *= 0.98;
   }
 
   show() {
