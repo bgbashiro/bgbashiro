@@ -104,14 +104,14 @@ form.halloffame-entry {
     text-align: right;
 }
 
-form.halloffame-entry > input {
+form.halloffame-entry>input {
     border: solid 1px;
     background-color: transparent;
     color: #e956d5d5;
     font-size: 24px;
 }
 
-.halloffame-entry > p {
+.halloffame-entry>p {
     margin: 0;
 }
 
@@ -338,6 +338,22 @@ form.halloffame-entry > input {
     animation-duration: 11s;
     animation-iteration-count: infinite;
     animation-direction: normal;
+}
+
+.leaderboard-level-text {
+    width: 60%;
+    min-width: 300px;
+    padding: auto;
+    margin: auto;
+    margin-top: 20px;
+    height: 42px;
+
+    color: #ff7b00;
+    text-align: center;
+    vertical-align: text-bottom;
+    font-family: "VT323", Sofia;
+    font-size: 25px;
+    font-weight: 900;
 }
 
 .leaderboard-entry {

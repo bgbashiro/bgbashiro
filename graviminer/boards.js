@@ -1,7 +1,13 @@
 
 function updateLeaderBoard(level) {
-    let leaderboardOL = document.querySelector("#leaderboard > ol")
-    leaderboardOL.innerHTML = "";
+    let leaderboard = document.querySelector("#leaderboard");
+    leaderboard.innerHTML="<h1>LEADERBOARD</h1>";
+    let p = document.createElement('p');
+    p.classList.add('leaderboard-level-text');
+    p.innerText = `Level ${level}`
+    leaderboard.appendChild(p);
+    let leaderboardOL = document.createElement("ol");
+    leaderboard.appendChild(leaderboardOL);
     fetchLeaderBoard(level).then(rows => {
         Object.entries(rows).forEach(([uuid, score]) => {
             getUsername(uuid).then(row => {
