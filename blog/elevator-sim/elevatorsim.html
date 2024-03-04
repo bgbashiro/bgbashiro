@@ -7516,6 +7516,31 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<link href="../style.css" rel="stylesheet"/>
+<section id="blog-navigation">
+<a class="link-previous-blog-post">
+<div class="arrow-left"></div>
+<s>Previous blog post</s>
+</a>
+<a class="link-to-blog-entries" href="..">
+<div class="arrow-up"></div>
+<p>Back to blog list</p>
+</a>
+<a class="link-next-blog-post" diabled="">
+<div class="arrow-right"></div>
+<s>Next blog post</s>
+</a>
+</section>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Elevator-Queuing-Simulation">Elevator Queuing Simulation<a class="anchor-link" href="#Elevator-Queuing-Simulation">¶</a></h1><p>Elevators are an interesting bunch. You enter a closet, doors are shut and you are disconnected from outside word for a fleeting moment. Next thing you know you are transported somewhere else in this world. For all we know, you might end up in an alternate universe, who can tell. But one thing is for certain though, nobody likes waiting long times in the hall for elevator to come and pick them up. Even worse being stuck inside the elevator for long with strangers in awkward silence, compounded by the fact that they are <a href="https://en.wikipedia.org/wiki/Faraday_cage">Faraday cage</a> (no cat videos to go through 🥹). All in all, best elevators are those you spend least time with.</p>
 <p>This brings up a curious problem, how does elevator decide which floor to go next. Do you make sure you finish your current passengers transport first? When you're on 8th floor with people going to 15th floor and person calls elevator on 7th floor, should you change direction and pick them and then continue the journey? What if two people call you up, one 5 floors up and another 5 floors down? Do you give priority to the person who called elevator first? If there are multiple elevators which one should pick up the call, the one already heading to the destination, or the one closest to it? Would it all be better if elevator knew in advance where people are going?</p>
 <p>Inspired by these questions and little bit of frustration from my personal experience I decided to see what I can learn about the problem. It seems some sort of min-max problem - how to serve maximum number of people by minimum amount of movement. Let's see what we can learn by coding a primitive simulation and testing things.</p>
@@ -7820,8 +7845,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><a href="..">Back to blog entries</a></p>
-<p><a href="../..">Back to home</a></p>
+<link href="../../style.css" rel="stylesheet"/>
 </div>
 </div>
 </div>

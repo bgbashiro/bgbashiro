@@ -18,7 +18,7 @@
 
 .body-wrapper {
     width: 80%;
-    min-width: 600px;
+    min-width: 300px;
     max-width: 1000px;
     height: 100vh;
     min-height: 500px;
@@ -136,3 +136,135 @@
     width: 40%;
     transition: width 2.5s;
 }
+
+/* For blog contents */
+
+.blog-navigation-subsection {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 5px;
+    z-index: 0;
+}
+
+.blog-navigation-link-wrapper a {
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.blog-navigation-link-wrapper a:hover {
+    /* text-decoration: none; */
+    /* display: flex; */
+    /* flex-direction: row; */
+    /* justify-content: flex-start; */
+    /* padding-top: 1%; */
+    /* padding-bottom: 1%; */
+    background-color: #49464615;
+}
+
+.blog-navigation-link-wrapper .blog-navigation-date {
+    padding-right: 5%;
+    font-weight: 900;
+    font-size: 15px;
+    text-align: center;
+    color: #3f434a;
+}
+
+.blog-navigation-link-wrapper .blog-navigation-link {
+    padding-right: 1%;
+    font-weight: 900;
+    font-size: 15px;
+    text-align: right;
+    color: #1309a5;
+}
+
+.blog-navigation-link-wrapper .blog-link-description {
+    font-weight: 100;
+    font-size: 15px;
+    text-align: left;
+    color: #494646;
+}
+
+/* For blog pages */
+
+#blog-navigation {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.link-to-blog-entries {
+    display: flex;
+    flex-direction: column;
+}
+
+.link-previous-blog-post {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.link-previous-blog-post p {
+    height: 25px;
+    margin: auto;
+    margin-left: 5px;
+}
+
+.link-next-blog-post {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.link-next-blog-post p {
+    height: 25px;
+    margin: auto;
+    margin-right: 5px;
+}
+
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid var(--reseda-green);
+  margin: auto;
+}
+
+.arrow-down {
+  width: 0; 
+  height: 0; 
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid var(--reseda-green);
+  margin: auto;
+}
+
+.arrow-right {
+  width: 0; 
+  height: 0; 
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid var(--earth-yellow);
+  margin: auto;
+}
+
+.arrow-left {
+  width: 0; 
+  height: 0; 
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent; 
+  border-right:10px solid var(--earth-yellow); 
+  margin: auto;
+}
+
+/* for Jupyter notebook renders */
+main {
+    width:80%; 
+    min-width: 700px;
+    margin: auto;
+}
+
