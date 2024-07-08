@@ -1,0 +1,49 @@
+#+TITLE: System Engineering a game
+#+AUTHOR: Balagardash
+#+OPTIONS: toc:nil author:nil date:nil num:nil
+
+* HUH
+
+I have been taking Systems Engineering classes lately and believe have learned a useful thing or two. Now is the time to actually confirm this theory. I have made severeal attempts to make a complete game in the past and abandoned them afterwards. I believe the main reason is directionlessness and hopefully procedure should help me with that. So here are 5 action steps to take (I have been taught) after receiving a request to build a system.
+
+1. Identify your stakeholders
+2. Write down user requirements
+3. Create system context mapping (input -> system -> output)
+4. Identify subsystems within the system and describe their functionalities
+5. Create a [[https://en.wikipedia.org/wiki/Finite-state_machine][Finite State Automata]] like diagram defining operation modes and actions
+
+** Step 0 : What is a system?
+
+Okay, time to bullshit a bit. There are many definitions of a system. The one I'm most intimate with is within the area of thermodynamics in physics. In thermodynamics system is defined as something that has a (physical or virtual) *boundary* and collection of things (whatever they are) enclosed by this boundary is called a *system* and outside of it is somethig called *surrounding*. Depending on its nature, the system can be completely /isolated/ - no exhcange with surrounding; can exchange energy, but not matter - called /closed/ system; or exchange both energy and matter - called.
+
+#+HTML: <em style="color:red">Add something about formal system definition.</em>
+
+Why am I blabbering about all this? Because this is where I was stuck at first. What is my main system - is it the computer the game will run on, or (if applicable) the server hosting it where people will download it from? Is my game engine (and tools I might end up creating to help me along the way) also included? Should I talk about the game components and how they interact with each other as the comlete system, or is really what the comlete package is?
+
+Now, these are all open-ended questions and there is no straightforward answer. Depending on the case one might me more applicable than other. I decided on defining the final software itself as the system itself. You will see that the relations I get will be stupidly trivial and might seem pointless. However, we need to keep in mind that the process is *iterative*, and we can revise and make changes as necessary. So starting simple is a good bet as it is easier to branch out rather than prune a very complex web of interactions. 
+
+** Identifying stakeholders
+
+After thinking (probably) a bit too hard I decided that there is realistically only a one stakeholder and that is the player. Now it didn't sit comfortably with me so I added myself (the developer) to the stakeholder list, because there may be some actions. 
+
+** Write down user requirements
+
+Huh, what??? Joke skipping it for now.
+
+** System context mapping
+
+I actually have good feelings for this part. Of the many actions the player can take I split them into two categories - CMD : commands player can send related to managing the game (start, pause, end etc.) and GAME : basically game input (move player, shoot etc). The corresponding outputs are SCENE - the functional screen player will see (menu, game, progress etc.) and UPDATE : the actual game footage. For the developer there is only single input TINKER - what this entails is undefined at this stage.
+
+|-------------+--------+------+--------+-------------|
+| Stakeholder | Input  | GAME | Output | Stakeholder |
+|-------------+--------+------+--------+-------------|
+| Player      | CMD    |      | Scene  | Player      |
+|             | GAME   |      | Update |             |
+| Developer   | TINKER |      |        |             |
+|-------------+--------+------+--------+-------------|
+
+** System subsystems
+
+This part was actually hard to come up with. I am not sure of my choices at this point, however I ended up splitting my system - the game, into three parts. First is *interface*, the thing that translates and passes inputs to their respective subsystem. Second one is *controller* and its job is to determine what is the current state of game is and what valid actions can the player take. Third one is aptly named *engine* which will handle the bulk of the game (enemy spawning, keeping score etc.).  
+
+/Farewell Amigos/

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-07-08 Mon 23:59 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>System Engineering a game</title>
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">System Engineering a game</h1>
+
+<div id="outline-container-org2f9eedf" class="outline-2">
+<h2 id="org2f9eedf">HUH</h2>
+<div class="outline-text-2" id="text-org2f9eedf">
+<p>
+I have been taking Systems Engineering classes lately and believe have learned a useful thing or two. Now is the time to actually confirm this theory. I have made severeal attempts to make a complete game in the past and abandoned them afterwards. I believe the main reason is directionlessness and hopefully procedure should help me with that. So here are 5 action steps to take (I have been taught) after receiving a request to build a system.
+</p>
+
+<ol class="org-ol">
+<li>Identify your stakeholders</li>
+<li>Write down user requirements</li>
+<li>Create system context mapping (input -&gt; system -&gt; output)</li>
+<li>Identify subsystems within the system and describe their functionalities</li>
+<li>Create a <a href="https://en.wikipedia.org/wiki/Finite-state_machine">Finite State Automata</a> like diagram defining operation modes and actions</li>
+</ol>
+</div>
+
+<div id="outline-container-orga003408" class="outline-3">
+<h3 id="orga003408">Step 0 : What is a system?</h3>
+<div class="outline-text-3" id="text-orga003408">
+<p>
+Okay, time to bullshit a bit. There are many definitions of a system. The one I'm most intimate with is within the area of thermodynamics in physics. In thermodynamics system is defined as something that has a (physical or virtual) <b>boundary</b> and collection of things (whatever they are) enclosed by this boundary is called a <b>system</b> and outside of it is somethig called <b>surrounding</b>. Depending on its nature, the system can be completely <i>isolated</i> - no exhcange with surrounding; can exchange energy, but not matter - called <i>closed</i> system; or exchange both energy and matter - called.
+</p>
+
+<em style="color:red">Add something about formal system definition.</em>
+
+<p>
+Why am I blabbering about all this? Because this is where I was stuck at first. What is my main system - is it the computer the game will run on, or (if applicable) the server hosting it where people will download it from? Is my game engine (and tools I might end up creating to help me along the way) also included? Should I talk about the game components and how they interact with each other as the comlete system, or is really what the comlete package is?
+</p>
+
+<p>
+Now, these are all open-ended questions and there is no straightforward answer. Depending on the case one might me more applicable than other. I decided on defining the final software itself as the system itself. You will see that the relations I get will be stupidly trivial and might seem pointless. However, we need to keep in mind that the process is <b>iterative</b>, and we can revise and make changes as necessary. So starting simple is a good bet as it is easier to branch out rather than prune a very complex web of interactions. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc935b72" class="outline-3">
+<h3 id="orgc935b72">Identifying stakeholders</h3>
+<div class="outline-text-3" id="text-orgc935b72">
+<p>
+After thinking (probably) a bit too hard I decided that there is realistically only a one stakeholder and that is the player. Now it didn't sit comfortably with me so I added myself (the developer) to the stakeholder list, because there may be some actions. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2fe54e9" class="outline-3">
+<h3 id="org2fe54e9">Write down user requirements</h3>
+<div class="outline-text-3" id="text-org2fe54e9">
+<p>
+Huh, what??? Joke skipping it for now.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org24f1ac7" class="outline-3">
+<h3 id="org24f1ac7">System context mapping</h3>
+<div class="outline-text-3" id="text-org24f1ac7">
+<p>
+I actually have good feelings for this part. Of the many actions the player can take I split them into two categories - CMD : commands player can send related to managing the game (start, pause, end etc.) and GAME : basically game input (move player, shoot etc). The corresponding outputs are SCENE - the functional screen player will see (menu, game, progress etc.) and UPDATE : the actual game footage. For the developer there is only single input TINKER - what this entails is undefined at this stage.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Stakeholder</th>
+<th scope="col" class="org-left">Input</th>
+<th scope="col" class="org-left">GAME</th>
+<th scope="col" class="org-left">Output</th>
+<th scope="col" class="org-left">Stakeholder</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Player</td>
+<td class="org-left">CMD</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Scene</td>
+<td class="org-left">Player</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">GAME</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Update</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Developer</td>
+<td class="org-left">TINKER</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org2bd2894" class="outline-3">
+<h3 id="org2bd2894">System subsystems</h3>
+<div class="outline-text-3" id="text-org2bd2894">
+<p>
+This part was actually hard to come up with. I am not sure of my choices at this point, however I ended up splitting my system - the game, into three parts. First is <b>interface</b>, the thing that translates and passes inputs to their respective subsystem. Second one is <b>controller</b> and its job is to determine what is the current state of game is and what valid actions can the player take. Third one is aptly named <b>engine</b> which will handle the bulk of the game (enemy spawning, keeping score etc.).  
+</p>
+
+<p>
+<i>Farewell Amigos</i>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Created: 2024-07-08 Mon 23:59</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
